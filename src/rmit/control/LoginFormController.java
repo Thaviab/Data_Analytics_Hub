@@ -1,10 +1,16 @@
+package rmit.control;
+
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 
-public class MainFormController {
+public class LoginFormController {
 
     public TextField txtUsername;
     public TextField txtPassword;
+
+    public void initialize(){
+
+    }
 
     public void signMeOnAction(MouseEvent mouseEvent) {
 

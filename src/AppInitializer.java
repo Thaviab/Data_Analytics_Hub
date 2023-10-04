@@ -4,6 +4,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class AppInitializer extends Application {
+
     public static void main(String[] args) {
         launch(args); //calling start method
     }
@@ -12,7 +13,7 @@ public class AppInitializer extends Application {
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setScene(
                 new Scene(FXMLLoader.load(
-                        getClass().getResource("MainForm.fxml"))));
+                        getClass().getResource("rmit/view/LoginForm.fxml"))));
         primaryStage.setTitle("Data Analytics Hub");
         primaryStage.centerOnScreen();
         primaryStage.show();
