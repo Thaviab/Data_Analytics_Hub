@@ -6,18 +6,14 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class AppInitializer extends Application {
-
     public static void main(String[] args) {
         launch(args); //calling start method
     }
-    //catching the fxml file -> then load -> then setting the scene -> show the stage
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setScene(
                 new Scene(FXMLLoader.load(
-                        getClass().getResource("rmit/view/LoginForm.fxml"))));
-        primaryStage.setTitle("Data Analytics Hub");
-        primaryStage.centerOnScreen();
+                        getClass().getResource("view/LoginForm.fxml"))));
         primaryStage.show();
     }
 }
