@@ -1,5 +1,6 @@
 package rmit.db;
 
+import org.mindrot.jbcrypt.BCrypt;
 import rmit.entity.User;
 
 import java.util.ArrayList;
@@ -14,6 +15,6 @@ public class Database {
 
     private static String encryptPassword(String rowPassword){
 
-        return null;
+        return BCrypt.hashpw(rowPassword,BCrypt.gensalt());
     }
 }
