@@ -35,6 +35,7 @@ public class LoginFormController {
             if(BCrypt.checkpw(txtPassword.getText(),selectedUser.getPassword())){
                 Stage stage = (Stage) LoginFormContext.getScene().getWindow();
                 stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("../view/DashboardForm.fxml"))));
+                stage.centerOnScreen();
             }else {
                 new Alert(Alert.AlertType.WARNING,"Wrong Password!").show();
             }
