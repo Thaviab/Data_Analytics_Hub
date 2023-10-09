@@ -11,36 +11,36 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="LoginFormContext" prefHeight="415.0" prefWidth="608.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rmit.control.LoginFormController">
+<AnchorPane fx:id="LoginFormContext" prefHeight="600.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rmit.control.LoginFormController">
    <children>
-      <ImageView fitHeight="135.0" fitWidth="584.0" layoutX="11.0" layoutY="14.0" pickOnBounds="true" smooth="false">
+      <ImageView fitHeight="165.0" fitWidth="733.0" layoutX="11.0" layoutY="14.0" pickOnBounds="true" smooth="false">
          <image>
             <Image url="@../../resources/images/data_cover_image.jpg" />
          </image>
       </ImageView>
-      <Button layoutX="264.0" layoutY="261.0" mnemonicParsing="false" onAction="#loginOnAction" prefHeight="36.0" prefWidth="80.0" text="Sign in" textAlignment="CENTER">
+      <Button layoutX="348.0" layoutY="300.0" mnemonicParsing="false" onAction="#loginOnAction" prefHeight="36.0" prefWidth="80.0" text="Sign in" textAlignment="CENTER">
          <font>
-            <Font name="System Bold" size="12.0" />
+            <Font name="System Bold" size="14.0" />
          </font>
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button layoutX="250.0" layoutY="341.0" mnemonicParsing="false" onAction="#createAccOnAction" prefHeight="36.0" prefWidth="107.0" text="Create Account">
+      <Button layoutX="324.0" layoutY="448.0" mnemonicParsing="false" onAction="#createAccOnAction" prefHeight="36.0" prefWidth="127.0" text="Create Account">
          <font>
-            <Font name="System Bold" size="12.0" />
+            <Font name="System Bold" size="14.0" />
          </font>
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Label layoutX="220.0" layoutY="313.0" text="No account? Create one now!!">
+      <Label layoutX="304.0" layoutY="418.0" text="No account? Create one now!!">
          <font>
-            <Font name="System Bold Italic" size="12.0" />
+            <Font name="System Bold Italic" size="14.0" />
          </font>
       </Label>
       <Text layoutX="-189.0" layoutY="-43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
-      <TextField fx:id="txtUsername" layoutX="172.0" layoutY="194.0" prefHeight="26.0" prefWidth="264.0" promptText="Username" />
-      <PasswordField fx:id="txtPassword" layoutX="172.0" layoutY="228.0" prefHeight="26.0" prefWidth="264.0" promptText="Password" />
+      <TextField fx:id="txtUsername" layoutX="193.0" layoutY="224.0" prefHeight="26.0" prefWidth="379.0" promptText="Username" />
+      <PasswordField fx:id="txtPassword" layoutX="193.0" layoutY="260.0" prefHeight="26.0" prefWidth="379.0" promptText="Password" />
    </children>
 </AnchorPane>

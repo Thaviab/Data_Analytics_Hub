@@ -6,34 +6,34 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="dashboardFormContext" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rmit.control.DashboardFormController">
+<AnchorPane fx:id="dashboardFormContext" prefHeight="600.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rmit.control.DashboardFormController">
    <children>
-      <Button layoutX="534.0" layoutY="14.0" mnemonicParsing="false" onAction="#logoutOnAction" text="Logout">
+      <Button layoutX="641.0" layoutY="14.0" mnemonicParsing="false" onAction="#logoutOnAction" prefHeight="26.0" prefWidth="94.0" text="Logout">
          <font>
-            <Font name="System Bold" size="12.0" />
+            <Font name="System Bold" size="14.0" />
          </font>
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button layoutX="517.0" layoutY="57.0" mnemonicParsing="false" text="Edit Profile">
+      <Button layoutX="641.0" layoutY="59.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="94.0" text="Edit Profile">
          <font>
-            <Font name="System Bold" size="12.0" />
+            <Font name="System Bold" size="14.0" />
          </font>
       </Button>
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="116.0" layoutY="56.0" prefHeight="26.0" prefWidth="367.0" text="SOCIAL MEDIA DATA ANALYTICS">
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="191.0" layoutY="11.0" prefHeight="26.0" prefWidth="367.0" text="SOCIAL MEDIA DATA ANALYTICS">
          <font>
-            <Font name="Dubai Bold" size="12.0" />
+            <Font name="Dubai Bold" size="17.0" />
          </font>
       </Label>
-      <Label layoutX="272.0" layoutY="18.0" text="WELCOME">
+      <Label layoutX="335.0" layoutY="69.0" prefHeight="30.0" prefWidth="79.0" text="WELCOME!">
          <font>
-            <Font name="Dubai Regular" size="12.0" />
+            <Font name="Dubai Bold" size="16.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="146.0" layoutY="40.0" prefHeight="18.0" prefWidth="306.0" text="Label">
+      <Label fx:id="lblName" alignment="CENTER" contentDisplay="CENTER" layoutX="222.0" layoutY="40.0" prefHeight="18.0" prefWidth="306.0" text="Label">
          <font>
-            <Font name="Dubai Bold" size="12.0" />
+            <Font name="Dubai Bold" size="16.0" />
          </font>
       </Label>
    </children>

@@ -6,8 +6,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import rmit.entity.User;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -15,7 +17,12 @@ import java.util.Optional;
 public class DashboardFormController {
 
     public AnchorPane dashboardFormContext;
-
+    public Label lblName;
+    public User currentUser;
+    public void setUser(User user){
+        this.currentUser = user;
+        lblName.setText(currentUser.getFirstName()+" "+currentUser.getLastName());
+    }
     public void logoutOnAction(ActionEvent actionEvent) throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"Are you sure?", ButtonType.YES,ButtonType.NO);
         Optional<ButtonType> type = alert.showAndWait();

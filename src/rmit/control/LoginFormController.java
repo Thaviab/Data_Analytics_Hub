@@ -10,12 +10,15 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.mindrot.jbcrypt.BCrypt;
-import rmit.db.Database;
+import org.sqlite.core.DB;
+import rmit.db.DBConnection;
 import rmit.entity.User;
 
 import java.io.IOException;
+import java.sql.*;
 
 public class LoginFormController {
+    public User currentUser;
     public TextField txtUsername;
     public AnchorPane LoginFormContext;
     public PasswordField txtPassword;
@@ -25,22 +28,42 @@ public class LoginFormController {
     }
 
     public void loginOnAction(ActionEvent actionEvent) throws IOException {
-        //catching the user
-        User selectedUser = Database.users.stream().
-                filter(user -> user.getUsername().
-                        equals(txtUsername.getText())).
-                findFirst().orElse(null);
-        //checking password
-        if (selectedUser!=null){
-            if(BCrypt.checkpw(txtPassword.getText(),selectedUser.getPassword())){
-                Stage stage = (Stage) LoginFormContext.getScene().getWindow();
-                stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("../view/DashboardForm.fxml"))));
-                stage.centerOnScreen();
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
+            String sql = "SELECT * FROM users WHERE username=?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1,txtUsername.getText());
+            ResultSet rst = stm.executeQuery();
+            if(rst.next()){
+                String storedPassword = rst.getString("password");
+                if (txtPassword.getText().equals(storedPassword)){
+                    String username = rst.getString("username");
+                    String password = rst.getString("password");
+                    String firstName = rst.getString("first_name");
+                    String lastName = rst.getString("last_name");
+                    boolean isVip = rst.getBoolean("is_vip");
+                    System.out.println(username+" "+password+" "+firstName+" "+lastName+" "+isVip);
+                    currentUser = new User(username,password,firstName,lastName,isVip);
+                    new Alert(Alert.AlertType.INFORMATION,"Login Sucessfull").show();
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/DashboardForm.fxml"));
+                    Scene scene = new Scene(loader.load());
+                    //Fetching the controller and passing user
+                    DashboardFormController dashboardFormController = loader.getController();
+                    dashboardFormController.setUser(currentUser);
+                    Stage stage = (Stage) LoginFormContext.getScene().getWindow();
+                    stage.setScene(scene);
+                    stage.centerOnScreen();
+/*                    Stage stage = (Stage) LoginFormContext.getScene().getWindow();
+                    stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("../view/DashboardForm.fxml"))));
+                    stage.centerOnScreen();*/
+                }else {
+                    new Alert(Alert.AlertType.WARNING,"Password Incorrect. Please try again!").show();
+                }
             }else {
-                new Alert(Alert.AlertType.WARNING,"Wrong Password!").show();
+                new Alert(Alert.AlertType.WARNING,"Username Incorrect. Please try again!").show();
             }
-        }else {
-            new Alert(Alert.AlertType.WARNING,"Username not found!").show();
+        }catch (SQLException | ClassNotFoundException ex){
+            System.out.println(ex.getMessage());
         }
     }
 

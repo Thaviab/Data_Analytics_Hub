@@ -1,3 +1,4 @@
+/*
 package rmit.db;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -18,3 +19,4 @@ public class Database {
         return BCrypt.hashpw(rowPassword,BCrypt.gensalt());
     }
 }
+*/

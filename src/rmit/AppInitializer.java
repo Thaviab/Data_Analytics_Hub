@@ -12,7 +12,7 @@ import java.sql.SQLException;
 
 public class AppInitializer extends Application {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        Connection connection = DBConnection.getInstance().getConnection();
+        //Connection connection = DBConnection.getInstance().getConnection();
         launch(args); //calling start method
 
     }

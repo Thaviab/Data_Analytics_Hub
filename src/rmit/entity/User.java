@@ -2,16 +2,21 @@ package rmit.entity;
 
 public class User {
     private String username;
+    private String password;
+    private String firstName;
+    private String lastName;
+    private boolean isVip;
 
     public User() {
     }
 
-    public User(String username, String password) {
+    public User(String username, String password, String firstName, String lastName, boolean isVip) {
         this.username = username;
         this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.isVip = isVip;
     }
-
-    private String password;
 
     public String getUsername() {
         return username;
@@ -27,6 +32,30 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public boolean isVip() {
+        return isVip;
+    }
+
+    public void setVip(boolean vip) {
+        isVip = vip;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     @Override
