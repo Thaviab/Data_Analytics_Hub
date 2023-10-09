@@ -44,7 +44,10 @@ public class LoginFormController {
         }
     }
 
-    public void createAccOnAction(ActionEvent actionEvent) {
+    public void createAccOnAction(ActionEvent actionEvent) throws IOException {
+        Stage stage = (Stage) LoginFormContext.getScene().getWindow();
+        stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("../view/CreateAccountForm.fxml"))));
+        stage.centerOnScreen();
     }
 
 }
