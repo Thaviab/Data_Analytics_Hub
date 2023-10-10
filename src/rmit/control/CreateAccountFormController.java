@@ -48,7 +48,7 @@ public class CreateAccountFormController {
                 new Alert(Alert.AlertType.WARNING, "Account creation unsucessfull");
             }
         }catch (SQLException | ClassNotFoundException ex){
-            System.out.println(ex.getMessage());
+            new Alert(Alert.AlertType.ERROR,"Error in creating new account: "+ ex.getMessage()).show();
         }
     }
 }

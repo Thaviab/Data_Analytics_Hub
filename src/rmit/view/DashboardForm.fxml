@@ -16,7 +16,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button layoutX="641.0" layoutY="59.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="94.0" text="Edit Profile">
+      <Button layoutX="608.0" layoutY="59.0" mnemonicParsing="false" onAction="#profileSettingsOnAction" prefHeight="30.0" prefWidth="127.0" text="Profile Settings">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
@@ -36,5 +36,11 @@
             <Font name="Dubai Bold" size="16.0" />
          </font>
       </Label>
+      <Label layoutX="33.0" layoutY="555.0" text="Would you like to subscribe to the application for a monthly fee of $0?">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Button layoutX="532.0" layoutY="553.0" mnemonicParsing="false" onAction="#subscribeOnAction" prefHeight="26.0" prefWidth="166.0" text="Subscribe" />
    </children>
 </AnchorPane>
