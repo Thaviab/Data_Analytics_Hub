@@ -8,7 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import rmit.db.DBConnection;
-import rmit.entity.User;
+import rmit.model.User;
 
 import java.io.IOException;
 import java.sql.Connection;

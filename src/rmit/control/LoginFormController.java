@@ -6,13 +6,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import org.mindrot.jbcrypt.BCrypt;
-import org.sqlite.core.DB;
 import rmit.db.DBConnection;
-import rmit.entity.User;
+import rmit.model.User;
 
 import java.io.IOException;
 import java.sql.*;

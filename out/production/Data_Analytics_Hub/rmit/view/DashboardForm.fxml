@@ -3,12 +3,14 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="dashboardFormContext" prefHeight="600.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rmit.control.DashboardFormController">
+<AnchorPane fx:id="dashboardFormContext" prefHeight="700.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rmit.control.DashboardFormController">
    <children>
-      <Button layoutX="641.0" layoutY="14.0" mnemonicParsing="false" onAction="#logoutOnAction" prefHeight="26.0" prefWidth="94.0" text="Logout">
+      <Button layoutX="688.0" layoutY="12.0" mnemonicParsing="false" onAction="#logoutOnAction" prefHeight="26.0" prefWidth="94.0" text="Logout">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
@@ -16,31 +18,86 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button layoutX="608.0" layoutY="59.0" mnemonicParsing="false" onAction="#profileSettingsOnAction" prefHeight="30.0" prefWidth="127.0" text="Profile Settings">
+      <Button layoutX="658.0" layoutY="54.0" mnemonicParsing="false" onAction="#profileSettingsOnAction" prefHeight="30.0" prefWidth="127.0" text="Profile Settings">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Button>
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="191.0" layoutY="11.0" prefHeight="26.0" prefWidth="367.0" text="SOCIAL MEDIA DATA ANALYTICS">
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="216.0" layoutY="11.0" prefHeight="26.0" prefWidth="367.0" text="SOCIAL MEDIA DATA ANALYTICS">
          <font>
             <Font name="Dubai Bold" size="17.0" />
          </font>
       </Label>
-      <Label layoutX="335.0" layoutY="69.0" prefHeight="30.0" prefWidth="79.0" text="WELCOME!">
+      <Label layoutX="359.0" layoutY="65.0" prefHeight="30.0" prefWidth="79.0" text="WELCOME!">
          <font>
             <Font name="Dubai Bold" size="16.0" />
          </font>
       </Label>
-      <Label fx:id="lblName" alignment="CENTER" contentDisplay="CENTER" layoutX="222.0" layoutY="40.0" prefHeight="18.0" prefWidth="306.0" text="Label">
+      <Label fx:id="lblName" alignment="CENTER" contentDisplay="CENTER" layoutX="246.0" layoutY="39.0" prefHeight="18.0" prefWidth="306.0" text="Label">
          <font>
             <Font name="Dubai Bold" size="16.0" />
          </font>
       </Label>
-      <Label layoutX="33.0" layoutY="555.0" text="Would you like to subscribe to the application for a monthly fee of $0?">
+      <Label layoutX="19.0" layoutY="664.0" text="Would you like to subscribe to the application for a monthly fee of $0?">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <Button layoutX="532.0" layoutY="553.0" mnemonicParsing="false" onAction="#subscribeOnAction" prefHeight="26.0" prefWidth="166.0" text="Subscribe" />
+      <Button layoutX="575.0" layoutY="661.0" mnemonicParsing="false" onAction="#subscribeOnAction" prefHeight="26.0" prefWidth="166.0" text="Subscribe" />
+      <Separator layoutX="1.0" layoutY="99.0" prefHeight="3.0" prefWidth="808.0" style="-fx-background-color: #0000FF;" />
+      <Label layoutX="13.0" layoutY="109.0" prefHeight="18.0" prefWidth="94.0" text="ADD A POST">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtAddId" layoutX="13.0" layoutY="127.0" prefHeight="26.0" prefWidth="127.0" promptText="post id" />
+      <TextField fx:id="txtAddContent" layoutX="149.0" layoutY="127.0" prefHeight="26.0" prefWidth="352.0" promptText="post content" />
+      <TextField fx:id="txtAddAuthor" layoutX="510.0" layoutY="127.0" prefHeight="26.0" prefWidth="99.0" promptText="author" />
+      <TextField fx:id="txtAddLikes" layoutX="618.0" layoutY="127.0" prefHeight="26.0" prefWidth="79.0" promptText="#likes" />
+      <TextField fx:id="txtAddShares" layoutX="706.0" layoutY="127.0" prefHeight="26.0" prefWidth="79.0" promptText="#shares" />
+      <Button layoutX="688.0" layoutY="161.0" mnemonicParsing="false" onAction="#addPostOnAction" prefHeight="26.0" prefWidth="94.0" text="Add Post" />
+      <Separator layoutX="1.0" layoutY="195.0" prefHeight="3.0" prefWidth="808.0" style="-fx-background-color: #D2691E;" />
+      <Label layoutX="15.0" layoutY="205.0" text="RETRIEVE A POST">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtRetId" layoutX="113.0" layoutY="241.0" prefHeight="26.0" prefWidth="544.0" promptText="Enter post ID" />
+      <TextField fx:id="txtRetContent" editable="false" layoutX="113.0" layoutY="266.0" prefHeight="26.0" prefWidth="544.0" />
+      <TextField fx:id="txtRetAuthor" editable="false" layoutX="113.0" layoutY="294.0" prefHeight="26.0" prefWidth="544.0" />
+      <TextField fx:id="txtRetLikes" editable="false" layoutX="113.0" layoutY="321.0" prefHeight="26.0" prefWidth="544.0" />
+      <TextField fx:id="txtRetShares" editable="false" layoutX="113.0" layoutY="350.0" prefHeight="26.0" prefWidth="544.0" />
+      <TextField fx:id="txtRetDateTime" editable="false" layoutX="113.0" layoutY="377.0" prefHeight="26.0" prefWidth="544.0" />
+      <Button layoutX="688.0" layoutY="240.0" mnemonicParsing="false" onAction="#retrievePostOnAction" prefHeight="26.0" prefWidth="94.0" text="Retrieve Post" />
+      <Label layoutX="40.0" layoutY="270.0" prefHeight="18.0" prefWidth="50.0" text="Content: " />
+      <Label layoutX="43.0" layoutY="294.0" text="Author: " />
+      <Label layoutX="27.0" layoutY="325.0" text="No of Likes: " />
+      <Label layoutX="17.0" layoutY="354.0" text="No of Shares: " />
+      <Label layoutX="18.0" layoutY="381.0" text="Date &amp; Time: " />
+      <Label layoutX="43.0" layoutY="245.0" text="Post ID: " />
+      <Separator layoutX="1.0" layoutY="406.0" prefHeight="3.0" prefWidth="808.0" style="-fx-background-color: #D2691E;" />
+      <TextField fx:id="txtDeletePostId" layoutX="13.0" layoutY="438.0" prefHeight="26.0" prefWidth="611.0" promptText="Enter post ID to delete" />
+      <Button layoutX="688.0" layoutY="438.0" mnemonicParsing="false" onAction="#removePostOnAction" prefHeight="26.0" prefWidth="94.0" text="Remove" />
+      <Label layoutX="13.0" layoutY="418.0" text="REMOVE A POST">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <Separator layoutX="-4.0" layoutY="476.0" prefHeight="3.0" prefWidth="811.0" style="-fx-background-color: #D2691E;" />
+      <Label layoutX="13.0" layoutY="495.0" prefHeight="19.0" prefWidth="325.0" text="RETRIEVE THE TOP N POSTS WITH THE MOST LIKES:">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtRetNPosts" layoutX="353.0" layoutY="492.0" prefHeight="26.0" prefWidth="273.0" promptText="Enter the value of N" />
+      <Button layoutX="688.0" layoutY="492.0" mnemonicParsing="false" onAction="#retrieveNPostsOnAction" prefHeight="26.0" prefWidth="94.0" text="Retrieve" />
+      <Separator layoutX="-7.0" layoutY="535.0" prefHeight="3.0" prefWidth="815.0" style="-fx-background-color: #D2691E;" />
+      <Label layoutX="13.0" layoutY="559.0" text="EXPORT POST TO CSV FILE: ">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtExportPost" layoutX="199.0" layoutY="554.0" prefHeight="26.0" prefWidth="427.0" promptText="Enter post ID to export" />
+      <Button layoutX="688.0" layoutY="554.0" mnemonicParsing="false" onAction="#exportPostOnAction" prefHeight="26.0" prefWidth="94.0" text="Export" />
    </children>
 </AnchorPane>

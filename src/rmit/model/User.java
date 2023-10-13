@@ -1,4 +1,4 @@
-package rmit.entity;
+package rmit.model;
 
 public class User {
     private String username;
