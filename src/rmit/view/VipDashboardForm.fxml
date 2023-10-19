@@ -9,9 +9,10 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="vipDashboardFormContext" prefHeight="700.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rmit.control.VipDashboardFormController">
+<AnchorPane fx:id="vipDashboardFormContext" prefHeight="700.0" prefWidth="800.0" style="-fx-background-color: #F5F5DC;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rmit.control.VipDashboardFormController">
     <children>
-        <Button layoutX="698.0" layoutY="12.0" mnemonicParsing="false" onAction="#logoutOnAction" prefHeight="26.0" prefWidth="94.0" text="Logout">
+      <AnchorPane prefHeight="100.0" prefWidth="818.0" style="-fx-background-color: #F8F8FF;" />
+        <Button layoutX="706.0" layoutY="12.0" mnemonicParsing="false" onAction="#logoutOnAction" prefHeight="26.0" prefWidth="94.0" text="Logout">
             <font>
                 <Font name="System Bold" size="14.0" />
             </font>
@@ -19,7 +20,7 @@
                 <Cursor fx:constant="HAND" />
             </cursor>
         </Button>
-        <Button layoutX="665.0" layoutY="54.0" mnemonicParsing="false" onAction="#profileSettingsOnAction" prefHeight="30.0" prefWidth="126.0" text="Profile Settings">
+        <Button layoutX="673.0" layoutY="53.0" mnemonicParsing="false" onAction="#profileSettingsOnAction" prefHeight="30.0" prefWidth="126.0" text="Profile Settings">
             <font>
                 <Font name="System Bold" size="14.0" />
             </font>
@@ -39,7 +40,7 @@
                 <Font name="Dubai Bold" size="16.0" />
             </font>
         </Label>
-      <Separator layoutY="97.0" prefHeight="3.0" prefWidth="813.0" style="-fx-background-color: #0000FF;" />
+      <Separator layoutY="97.0" prefHeight="3.0" prefWidth="823.0" style="-fx-background-color: #0000FF;" />
       <Label layoutX="14.0" layoutY="107.0" prefHeight="18.0" prefWidth="94.0" text="ADD A POST">
          <font>
             <Font name="System Bold" size="13.0" />
@@ -49,47 +50,54 @@
       <TextField fx:id="txtAddContent" layoutX="153.0" layoutY="126.0" prefHeight="26.0" prefWidth="352.0" promptText="post content" />
       <TextField fx:id="txtAddAuthor" layoutX="516.0" layoutY="126.0" prefHeight="26.0" prefWidth="99.0" promptText="author" />
       <TextField fx:id="txtAddLikes" layoutX="625.0" layoutY="126.0" prefHeight="26.0" prefWidth="79.0" promptText="#likes" />
-      <TextField fx:id="txtAddShares" layoutX="714.0" layoutY="126.0" prefHeight="26.0" prefWidth="79.0" promptText="#shares" />
-      <Button layoutX="698.0" layoutY="160.0" mnemonicParsing="false" onAction="#addPostOnAction" prefHeight="26.0" prefWidth="94.0" text="Add Post" />
-      <Separator layoutY="193.0" prefHeight="3.0" prefWidth="814.0" style="-fx-background-color: #D2691E;" />
+      <TextField fx:id="txtAddShares" layoutX="714.0" layoutY="126.0" prefHeight="26.0" prefWidth="86.0" promptText="#shares" />
+      <Button layoutX="706.0" layoutY="159.0" mnemonicParsing="false" onAction="#addPostOnAction" prefHeight="26.0" prefWidth="94.0" text="Add Post" />
+      <Separator layoutY="193.0" prefHeight="3.0" prefWidth="823.0" style="-fx-background-color: #D2691E;" />
       <Label layoutX="14.0" layoutY="203.0" text="RETRIEVE A POST">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
       </Label>
-      <TextField fx:id="txtRetId" layoutX="14.0" layoutY="222.0" prefHeight="26.0" prefWidth="678.0" promptText="Enter post ID" />
-      <Button layoutX="698.0" layoutY="222.0" mnemonicParsing="false" onAction="#retrievePostOnAction" prefHeight="26.0" prefWidth="94.0" text="Retrieve Post" />
-      <TextArea fx:id="txtAreaRetrievePost" layoutX="21.0" layoutY="263.0" prefHeight="94.0" prefWidth="770.0" />
-      <Separator layoutY="364.0" prefHeight="3.0" prefWidth="814.0" style="-fx-background-color: #D2691E;" />
+      <TextField fx:id="txtRetId" layoutX="14.0" layoutY="222.0" prefHeight="26.0" prefWidth="686.0" promptText="Enter post ID" />
+      <Button layoutX="706.0" layoutY="222.0" mnemonicParsing="false" onAction="#retrievePostOnAction" prefHeight="26.0" prefWidth="94.0" text="Retrieve Post" />
+      <TextArea fx:id="txtAreaRetrievePost" layoutX="15.0" layoutY="263.0" prefHeight="94.0" prefWidth="785.0" />
+      <Separator layoutY="364.0" prefHeight="3.0" prefWidth="823.0" style="-fx-background-color: #D2691E;" />
       <Label layoutX="10.0" layoutY="374.0" text="REMOVE A POST">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
       </Label>
-      <TextField fx:id="txtDeletePostId" layoutX="14.0" layoutY="402.0" prefHeight="26.0" prefWidth="678.0" promptText="Enter post ID to delete" />
-      <Button layoutX="698.0" layoutY="402.0" mnemonicParsing="false" onAction="#removePostOnAction" prefHeight="26.0" prefWidth="94.0" text="Remove" />
-      <Separator layoutY="437.0" prefHeight="3.0" prefWidth="818.0" style="-fx-background-color: #D2691E;" />
+      <TextField fx:id="txtDeletePostId" layoutX="14.0" layoutY="402.0" prefHeight="26.0" prefWidth="687.0" promptText="Enter post ID to delete" />
+      <Button layoutX="706.0" layoutY="402.0" mnemonicParsing="false" onAction="#removePostOnAction" prefHeight="26.0" prefWidth="94.0" text="Remove" />
+      <Separator layoutY="437.0" prefHeight="3.0" prefWidth="823.0" style="-fx-background-color: #D2691E;" />
       <Label layoutX="10.0" layoutY="451.0" prefHeight="19.0" prefWidth="325.0" text="RETRIEVE THE TOP N POSTS WITH THE MOST LIKES:">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
       </Label>
-      <TextField fx:id="txtRetNPosts" layoutX="352.0" layoutY="447.0" prefHeight="26.0" prefWidth="340.0" promptText="Enter the value of N" />
-      <Button layoutX="698.0" layoutY="447.0" mnemonicParsing="false" onAction="#retrieveNPostsOnAction" prefHeight="26.0" prefWidth="94.0" text="Retrieve" />
-      <Separator layoutX="-2.0" layoutY="484.0" prefHeight="3.0" prefWidth="818.0" style="-fx-background-color: #D2691E;" />
+      <TextField fx:id="txtRetNPosts" layoutX="352.0" layoutY="447.0" prefHeight="26.0" prefWidth="349.0" promptText="Enter the value of N" />
+      <Button layoutX="706.0" layoutY="447.0" mnemonicParsing="false" onAction="#retrieveNPostsOnAction" prefHeight="26.0" prefWidth="94.0" text="Retrieve" />
+      <Separator layoutY="482.0" prefHeight="3.0" prefWidth="823.0" style="-fx-background-color: #D2691E;" />
       <Label layoutX="10.0" layoutY="498.0" text="EXPORT POST TO CSV FILE: ">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
       </Label>
-      <TextField fx:id="txtExportPost" layoutX="195.0" layoutY="494.0" prefHeight="26.0" prefWidth="496.0" promptText="Enter post ID to export" />
-      <Button layoutX="698.0" layoutY="494.0" mnemonicParsing="false" onAction="#exportPostOnAction" prefHeight="26.0" prefWidth="94.0" text="Export" />
-      <Separator layoutX="-2.0" layoutY="536.0" prefHeight="3.0" prefWidth="818.0" style="-fx-background-color: #D2691E;" />
+      <TextField fx:id="txtExportPost" layoutX="195.0" layoutY="494.0" prefHeight="26.0" prefWidth="507.0" promptText="Enter post ID to export" />
+      <Button layoutX="706.0" layoutY="494.0" mnemonicParsing="false" onAction="#exportPostOnAction" prefHeight="26.0" prefWidth="94.0" text="Export" />
+      <Separator layoutY="536.0" prefHeight="3.0" prefWidth="823.0" style="-fx-background-color: #D2691E;" />
       <Label layoutX="10.0" layoutY="551.0" prefHeight="26.0" prefWidth="317.0" text="DATA VISUALIZATION OF NUMBER OF SHARES: ">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
       </Label>
-      <Button layoutX="322.0" layoutY="552.0" mnemonicParsing="false" onAction="#displayPieChartOnAction" prefHeight="26.0" prefWidth="472.0" text="Display PIE Chart" />
+      <Button layoutX="322.0" layoutY="552.0" mnemonicParsing="false" onAction="#displayPieChartOnAction" prefHeight="26.0" prefWidth="478.0" text="Display PIE Chart" />
+      <Separator layoutY="589.0" prefHeight="3.0" prefWidth="823.0" style="-fx-background-color: #D2691E;" />
+      <Label layoutX="10.0" layoutY="603.0" prefHeight="26.0" prefWidth="200.0" text="IMPORT SOCIAL MEDIA POSTS: ">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <Button layoutX="322.0" layoutY="604.0" mnemonicParsing="false" onAction="#importFileOnAction" prefHeight="26.0" prefWidth="478.0" text="Import CSV File" />
     </children>
 </AnchorPane>

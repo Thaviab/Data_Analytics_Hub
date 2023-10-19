@@ -15,9 +15,7 @@ import rmit.db.DBConnection;
 import rmit.model.Posts;
 import rmit.model.User;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -112,9 +110,7 @@ public class VipDashboardFormController {
         } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
         }
-
     }
-
     public void removePostOnAction(ActionEvent actionEvent) {
         int postId = Integer.parseInt(txtDeletePostId.getText());
         try {
@@ -238,5 +234,62 @@ public class VipDashboardFormController {
         pieChartStage.setTitle("Distribution of Posts by Shares");
         pieChartStage.setScene(pieChartScene);
         pieChartStage.show();
+    }
+    public void importFileOnAction(ActionEvent actionEvent) {
+        //Filechooser to select csv file
+        FileChooser fileSelect = new FileChooser();
+        fileSelect.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV FIles","*.csv"));
+        File selectedFile = fileSelect.showOpenDialog(null);
+
+        if(selectedFile != null){
+            try (BufferedReader br = new BufferedReader(new FileReader(selectedFile))){
+                String line = br.readLine(); //skipping first line
+
+                Connection connection = DBConnection.getInstance().getConnection();
+
+                int affectedRows = 0;
+
+                while ((line = br.readLine()) != null){
+                    String[] lineData = line.split(",");
+                        int id = Integer.parseInt(lineData[0].trim());
+
+                        if(!idCheck(id)){
+                            PreparedStatement stm = connection.prepareStatement("INSERT INTO posts (postId, content, author, noOfLikes, noOfShares, dateTime) " +
+                                    "VALUES (?,?,?,?,?,?)");
+                            String content = lineData[1].trim();
+                            String author = lineData[2].trim();
+                            int likes = (Integer.parseInt(lineData[3].trim()));
+                            int shares = Integer.parseInt(lineData[4].trim());
+                            String dateTime = lineData[5].trim();
+
+                            stm.setInt(1,id);
+                            stm.setString(2,content);
+                            stm.setString(3,author);
+                            stm.setInt(4,likes);
+                            stm.setInt(5,shares);
+                            stm.setString(6,dateTime);
+
+                            affectedRows += stm.executeUpdate();
+                        }
+                    }
+                if(affectedRows>0){
+                    new Alert(Alert.AlertType.INFORMATION,"Import sucessfull").show();
+                }else {
+                    new Alert(Alert.AlertType.INFORMATION,"No posts were imported").showAndWait();
+                }
+                } catch (IOException | SQLException | ClassNotFoundException e) {
+                new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
+            }
+        }else {
+            new Alert(Alert.AlertType.ERROR,"Import CSV File Failed").show();
+        }
+    }
+    private boolean idCheck(int postId) throws SQLException, ClassNotFoundException {
+        Statement stm = DBConnection.getInstance().getConnection().createStatement();
+        ResultSet rst = stm.executeQuery("SELECT COUNT(postId) FROM posts WHERE postId='"+postId+"'");
+        if (rst.next()){
+            return rst.getInt(1) > 0;
+        }
+        return false;
     }
 }

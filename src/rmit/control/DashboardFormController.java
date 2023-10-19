@@ -104,7 +104,7 @@ public class DashboardFormController {
             Connection connection = DBConnection.getInstance().getConnection();
             PreparedStatement stm = connection.prepareStatement("INSERT INTO posts (postId, content, author, noOfLikes, noOfShares, dateTime)"+
                     "VALUES (?,?,?,?,?,?)");
-            stm.setString(1,txtAddId.getText());
+            stm.setInt(1, Integer.parseInt(txtAddId.getText()));
             stm.setString(2,txtAddContent.getText());
             stm.setString(3,txtAddAuthor.getText());
             stm.setInt(4, Integer.parseInt(txtAddLikes.getText()));
