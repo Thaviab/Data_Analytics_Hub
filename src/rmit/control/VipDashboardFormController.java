@@ -82,6 +82,11 @@ public class VipDashboardFormController {
     }
 
     public void addPostOnAction(ActionEvent actionEvent) {
+        if(txtAddId.getText().isEmpty() || txtAddContent.getText().isEmpty() || txtAddAuthor.getText().isEmpty() ||
+                txtAddShares.getText().isEmpty() || txtAddShares.getText().isEmpty()){
+            new Alert(Alert.AlertType.ERROR, "Post adding unsucessfull").show();
+            return;
+        }
         LocalDateTime currentDateTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         String formattedDateTime = currentDateTime.format(formatter);
@@ -112,6 +117,10 @@ public class VipDashboardFormController {
     }
 
     public void retrievePostOnAction(ActionEvent actionEvent) {
+        if(txtRetId.getText().isEmpty()){
+            new Alert(Alert.AlertType.ERROR, "Invalid ID").show();
+            return;
+        }
         int postId = Integer.parseInt(txtRetId.getText());
         try {
             Statement stm = DBConnection.getInstance().getConnection().createStatement();
@@ -123,12 +132,20 @@ public class VipDashboardFormController {
                         +"\nNo of Likes: "+rst.getInt("noOfLikes")+"\nNo of Shares: "+rst.getInt("noOfShares")
                         +"\nDate & Time: "+rst.getString("dateTime"));
                 txtAreaRetrievePost.setText(displayPost.toString());
+            }else {
+                new Alert(Alert.AlertType.WARNING,"No post found with the post ID!").show();
+                txtRetId.clear();
+                txtAreaRetrievePost.clear();
             }
         } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
         }
     }
     public void removePostOnAction(ActionEvent actionEvent) {
+        if(txtDeletePostId.getText().isEmpty()){
+            new Alert(Alert.AlertType.ERROR,"Invalid ID. Please try again").show();
+            return;
+        }
         int postId = Integer.parseInt(txtDeletePostId.getText());
         try {
             Connection connection = DBConnection.getInstance().getConnection();
@@ -140,6 +157,7 @@ public class VipDashboardFormController {
                 new Alert(Alert.AlertType.INFORMATION,"Post removed!").show();
             }else {
                 new Alert(Alert.AlertType.ERROR,"Failed to remove the post. Please try again").show();
+                txtDeletePostId.clear();
             }
         } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
@@ -147,6 +165,10 @@ public class VipDashboardFormController {
     }
 
     public void retrieveNPostsOnAction(ActionEvent actionEvent) {
+        if(txtRetNPosts.getText().isEmpty()){
+            new Alert(Alert.AlertType.ERROR,"Invalid number. Please try again").show();
+            return;
+        }
         try {
             int n = Integer.parseInt(txtRetNPosts.getText());
             Statement stm = DBConnection.getInstance().getConnection().createStatement();
@@ -230,8 +252,16 @@ public class VipDashboardFormController {
 
                 while ((line = br.readLine()) != null){
                     String[] lineData = line.split(",");
+
+                    //checking the format of the csv file
+                    if(lineData.length != 6){
+                        new Alert(Alert.AlertType.ERROR,"Wrong format in the csv file").show();
+                        return;
+                    }
+
                     int id = Integer.parseInt(lineData[0].trim());
 
+                    //first checking whether the post is in the db
                     if(!idCheck(id)){
                         PreparedStatement stm = connection.prepareStatement("INSERT INTO posts (postId, content, author, noOfLikes, noOfShares, dateTime) " +
                                 "VALUES (?,?,?,?,?,?)");

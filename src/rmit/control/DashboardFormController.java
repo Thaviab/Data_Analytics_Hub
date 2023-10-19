@@ -63,29 +63,33 @@ public class DashboardFormController {
         lblName.setText(currentUser.getFirstName()+" "+currentUser.getLastName());
     }
     public void logoutOnAction(ActionEvent actionEvent) throws IOException {
+        //taking confirmation
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"Are you sure?", ButtonType.YES,ButtonType.NO);
         Optional<ButtonType> type = alert.showAndWait();
         if (type.get()==ButtonType.YES){
             Stage stage = (Stage) dashboardFormContext.getScene().getWindow();
-            //stage.setTitle("Dashboard");
             stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("../view/LoginForm.fxml"))));
             stage.centerOnScreen();
         }
     }
 
     public void subscribeOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
+        //taking confirmation
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"Do you want to subscribe and be a VIP user?",ButtonType.YES,ButtonType.NO);
         Optional<ButtonType> type = alert.showAndWait();
         if(type.get()==ButtonType.YES){
             try {
                 Connection connection = DBConnection.getInstance().getConnection();
+                //setting isVip to 1
                 PreparedStatement stm = connection.prepareStatement("UPDATE users SET is_vip=? WHERE username=?");
                 stm.setBoolean(1,true);
                 stm.setString(2,currentUser.getUsername());
                 int affectedRows = stm.executeUpdate();
+                //checking if the row is updated
                 if(affectedRows>0){
                     currentUser.setVip(true);
                     new Alert(Alert.AlertType.INFORMATION,"You are now a VIP user! Log again to experience the premium features").showAndWait();
+                    //heading back to the login form
                     Stage stage = (Stage) dashboardFormContext.getScene().getWindow();
                     stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("../view/LoginForm.fxml"))));
                     stage.centerOnScreen();
@@ -99,8 +103,10 @@ public class DashboardFormController {
     }
 
     public void profileSettingsOnAction(ActionEvent actionEvent) throws IOException {
+        //loading the profile setting form context
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/EditUserProfileForm.fxml"));
         Scene scene = new Scene(loader.load());
+        //passing the user to the edit user profile form context
         EditUserProfileFormController editUserProfileFormController = loader.getController();
         editUserProfileFormController.setUser(currentUser);
         editUserProfileFormController.setUserDetails();
@@ -112,6 +118,11 @@ public class DashboardFormController {
     }
 
     public void addPostOnAction(ActionEvent actionEvent) {
+        if(txtAddId.getText().isEmpty() || txtAddContent.getText().isEmpty() || txtAddAuthor.getText().isEmpty() ||
+        txtAddShares.getText().isEmpty() || txtAddShares.getText().isEmpty()){
+            new Alert(Alert.AlertType.ERROR, "Post adding unsucessfull").show();
+            return;
+        }
         LocalDateTime currentDateTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         String formattedDateTime = currentDateTime.format(formatter);
@@ -134,7 +145,7 @@ public class DashboardFormController {
                 txtAddShares.clear();
                 new Alert(Alert.AlertType.INFORMATION, "Post added sucessfully").show();
             }else {
-                new Alert(Alert.AlertType.INFORMATION, "Post adding unsucessfull").show();
+                new Alert(Alert.AlertType.ERROR, "Post adding unsucessfull").show();
             }
         } catch (SQLException | ClassNotFoundException | NumberFormatException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
@@ -143,6 +154,10 @@ public class DashboardFormController {
     }
 
     public void retrievePostOnAction(ActionEvent actionEvent) {
+        if(txtRetId.getText().isEmpty()){
+            new Alert(Alert.AlertType.ERROR, "Invalid ID").show();
+            return;
+        }
         int postId = Integer.parseInt(txtRetId.getText());
         try {
             Statement stm = DBConnection.getInstance().getConnection().createStatement();
@@ -155,6 +170,12 @@ public class DashboardFormController {
                 txtRetDateTime.setText(rst.getString("dateTime"));
             }else {
                 new Alert(Alert.AlertType.WARNING,"No post found with the post ID!").show();
+                txtRetId.clear();
+                txtRetContent.clear();
+                txtRetAuthor.clear();
+                txtRetLikes.clear();
+                txtRetShares.clear();
+                txtRetDateTime.clear();
             }
         } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
@@ -162,6 +183,10 @@ public class DashboardFormController {
     }
 
     public void removePostOnAction(ActionEvent actionEvent) {
+        if(txtDeletePostId.getText().isEmpty()){
+            new Alert(Alert.AlertType.ERROR,"Invalid ID. Please try again").show();
+            return;
+        }
         int postId = Integer.parseInt(txtDeletePostId.getText());
         try {
             Connection connection = DBConnection.getInstance().getConnection();
@@ -171,8 +196,10 @@ public class DashboardFormController {
             if(affectedRows>0){
                 txtDeletePostId.clear();
                 new Alert(Alert.AlertType.INFORMATION,"Post removed!").show();
+                txtDeletePostId.clear();
             }else {
                 new Alert(Alert.AlertType.ERROR,"Failed to remove the post. Please try again").show();
+                txtDeletePostId.clear();
             }
         } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
@@ -180,6 +207,10 @@ public class DashboardFormController {
     }
 
     public void retrieveNPostsOnAction(ActionEvent actionEvent) throws IOException {
+        if(txtRetNPosts.getText().isEmpty()){
+            new Alert(Alert.AlertType.ERROR,"Invalid number. Please try again").show();
+            return;
+        }
         try {
             int n = Integer.parseInt(txtRetNPosts.getText());
             Statement stm = DBConnection.getInstance().getConnection().createStatement();
@@ -210,7 +241,7 @@ public class DashboardFormController {
 
     public void exportPostOnAction(ActionEvent actionEvent) {
         String postId = txtExportPost.getText();
-        if(postId == null){
+        if(postId == null || postId.isEmpty()){
             new Alert(Alert.AlertType.ERROR,"Please provide a post ID").show();
             return;
         }
@@ -219,6 +250,7 @@ public class DashboardFormController {
             ResultSet rst = stm.executeQuery("SELECT * FROM posts WHERE postId='"+Integer.parseInt(postId)+"'");
             if(!rst.next()){
                 new Alert(Alert.AlertType.ERROR,"No post found with the given post ID").show();
+                txtExportPost.clear();
                 return;
             }
             //fetching post data
