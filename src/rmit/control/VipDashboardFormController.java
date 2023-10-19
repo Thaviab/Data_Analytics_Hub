@@ -3,6 +3,7 @@ package rmit.control;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -37,6 +38,22 @@ public class VipDashboardFormController {
     public TextField txtDeletePostId;
     public TextField txtRetNPosts;
     public TextField txtExportPost;
+    public AnchorPane importPostsFormContext;
+    public AnchorPane displayPieCHartFormContext;
+    public AnchorPane exportPostFormContext;
+    public AnchorPane retreiveTopPostsFormContext;
+    public TextArea txtAreaTopNPosts;
+    public AnchorPane removePostFormContext;
+    public AnchorPane retrievePostFormContext;
+    public AnchorPane addPostFormContext;
+    public AnchorPane welcomeFormContext;
+
+    @FXML
+    private void initialize(){
+        welcomeFormContext.setVisible(true);
+        welcomeFormContext.toFront();
+
+    }
 
     public void setUser(User user){
         this.currentUser = user;
@@ -102,9 +119,9 @@ public class VipDashboardFormController {
             StringBuilder displayPost = new StringBuilder();
             if(rst.next()){
                 displayPost.append("Post ID: "+rst.getInt("postID")+"\nContent"
-                +rst.getString("content")+"\nAuthor: "+rst.getString("author")
-                +"\nNo of Likes: "+rst.getInt("noOfLikes")+"\nNo of Shares: "+rst.getInt("noOfShares")
-                +"\nDate & Time: "+rst.getString("dateTime"));
+                        +rst.getString("content")+"\nAuthor: "+rst.getString("author")
+                        +"\nNo of Likes: "+rst.getInt("noOfLikes")+"\nNo of Shares: "+rst.getInt("noOfShares")
+                        +"\nDate & Time: "+rst.getString("dateTime"));
                 txtAreaRetrievePost.setText(displayPost.toString());
             }
         } catch (SQLException | ClassNotFoundException e) {
@@ -141,15 +158,19 @@ public class VipDashboardFormController {
                         rst.getInt("noOfLikes"),rst.getInt("noOfShares"),rst.getString("dateTime"));
                 topPosts.add(post);
             }
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/RetrieveTopNPostsForm.fxml"));
-            Parent parent = loader.load();
-            RetrieveTopNPostsFormController retrieveTopNPostsFormController = loader.getController();
-            retrieveTopNPostsFormController.displayPosts(topPosts);
-            Stage stage = new Stage();
-            stage.setScene(new Scene(parent));
-            stage.setTitle("Top N Posts");
-            stage.show();
-        } catch (SQLException | ClassNotFoundException | NumberFormatException | IOException e) {
+            StringBuilder displayText = new StringBuilder();
+
+            for(Posts posts : topPosts){
+                displayText.append("ID: ").append(posts.getPostID())
+                        .append(", Content: ").append(posts.getContent())
+                        .append(", Author: ").append(posts.getAuthor())
+                        .append(", Likes: ").append(posts.getNoOfLikes())
+                        .append(", Shares: ").append(posts.getNoOfShares())
+                        .append(", Date & Time: ").append(posts.getDateTime())
+                        .append("\n-----------------------------------------------------\n");
+            }
+            txtAreaTopNPosts.setText(displayText.toString());
+        } catch (SQLException | ClassNotFoundException | NumberFormatException e) {
             new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
         }
     }
@@ -251,33 +272,33 @@ public class VipDashboardFormController {
 
                 while ((line = br.readLine()) != null){
                     String[] lineData = line.split(",");
-                        int id = Integer.parseInt(lineData[0].trim());
+                    int id = Integer.parseInt(lineData[0].trim());
 
-                        if(!idCheck(id)){
-                            PreparedStatement stm = connection.prepareStatement("INSERT INTO posts (postId, content, author, noOfLikes, noOfShares, dateTime) " +
-                                    "VALUES (?,?,?,?,?,?)");
-                            String content = lineData[1].trim();
-                            String author = lineData[2].trim();
-                            int likes = (Integer.parseInt(lineData[3].trim()));
-                            int shares = Integer.parseInt(lineData[4].trim());
-                            String dateTime = lineData[5].trim();
+                    if(!idCheck(id)){
+                        PreparedStatement stm = connection.prepareStatement("INSERT INTO posts (postId, content, author, noOfLikes, noOfShares, dateTime) " +
+                                "VALUES (?,?,?,?,?,?)");
+                        String content = lineData[1].trim();
+                        String author = lineData[2].trim();
+                        int likes = (Integer.parseInt(lineData[3].trim()));
+                        int shares = Integer.parseInt(lineData[4].trim());
+                        String dateTime = lineData[5].trim();
 
-                            stm.setInt(1,id);
-                            stm.setString(2,content);
-                            stm.setString(3,author);
-                            stm.setInt(4,likes);
-                            stm.setInt(5,shares);
-                            stm.setString(6,dateTime);
+                        stm.setInt(1,id);
+                        stm.setString(2,content);
+                        stm.setString(3,author);
+                        stm.setInt(4,likes);
+                        stm.setInt(5,shares);
+                        stm.setString(6,dateTime);
 
-                            affectedRows += stm.executeUpdate();
-                        }
+                        affectedRows += stm.executeUpdate();
                     }
+                }
                 if(affectedRows>0){
                     new Alert(Alert.AlertType.INFORMATION,"Import sucessfull").show();
                 }else {
                     new Alert(Alert.AlertType.INFORMATION,"No posts were imported").showAndWait();
                 }
-                } catch (IOException | SQLException | ClassNotFoundException e) {
+            } catch (IOException | SQLException | ClassNotFoundException e) {
                 new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
             }
         }else {
@@ -291,5 +312,82 @@ public class VipDashboardFormController {
             return rst.getInt(1) > 0;
         }
         return false;
+    }
+
+    public void btnAddPostControlPanel(ActionEvent actionEvent) {
+        addPostFormContext.toFront();
+    }
+
+    public void btnRetrievePostControlPanel(ActionEvent actionEvent) {
+        retrievePostFormContext.toFront();
+    }
+
+    public void btnremovePostControlPanel(ActionEvent actionEvent) {
+        removePostFormContext.toFront();
+    }
+
+    public void btnTopPostControlPanel(ActionEvent actionEvent) {
+        retreiveTopPostsFormContext.toFront();
+    }
+
+    public void btnExportPostControlPanel(ActionEvent actionEvent) {
+        exportPostFormContext.toFront();
+    }
+
+    public void btnDataChartControlPanel(ActionEvent actionEvent) {
+        displayPieCHartFormContext.toFront();
+
+        int count1 = 0;
+        int count2 = 0;
+        int count3 = 0;
+
+        try {
+            //getting post count with likes 0 to 99
+            Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement stmt1 = connection.prepareStatement("SELECT COUNT(*) FROM posts WHERE noOfShares BETWEEN 0 AND 99");
+            ResultSet rst1 = stmt1.executeQuery();
+            if (rst1.next()) {
+                count1 = rst1.getInt(1);
+            }
+
+            //getting post count with likes 100 to 999
+            PreparedStatement stmt2 = connection.prepareStatement("SELECT COUNT(*) FROM posts WHERE noOfShares BETWEEN 100 AND 999");
+            ResultSet rst2 = stmt2.executeQuery();
+            if (rst2.next()) {
+                count2 = rst2.getInt(1);
+            }
+
+            //getting post count with likes 1000 and more
+            PreparedStatement stmt3 = connection.prepareStatement("SELECT COUNT(*) FROM posts WHERE noOfShares >= 1000");
+            ResultSet rst3 = stmt3.executeQuery();
+            if (rst3.next()) {
+                count3 = rst3.getInt(1);
+            }
+
+        } catch (SQLException | ClassNotFoundException e) {
+            new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
+        }
+
+        //creating pie chart data
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
+                new PieChart.Data("0-99 #Shares", count1),
+                new PieChart.Data("100-999 #Shares", count2),
+                new PieChart.Data("1000+ #Shares", count3));
+
+        //creating the pie chart
+        PieChart pieChart = new PieChart(pieChartData);
+        pieChart.setTitle("Distribution of Posts by Shares");
+
+        //setting coordinates of the anchor pane
+        AnchorPane.setTopAnchor(pieChart, 0.0);
+        AnchorPane.setRightAnchor(pieChart, 0.0);
+        AnchorPane.setBottomAnchor(pieChart, 0.0);
+        AnchorPane.setLeftAnchor(pieChart, 0.0);
+
+        displayPieCHartFormContext.getChildren().add(pieChart);
+    }
+
+    public void btnImportPostControlPanel(ActionEvent actionEvent) {
+        importPostsFormContext.toFront();
     }
 }
