@@ -29,16 +29,14 @@ public class CreateAccountFormController {
     }
 
     public void createOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
+        if(txtUsername.getText().isEmpty() || txtPwd.getText().isEmpty() || txtFirstName.getText().isEmpty() ||
+                txtSecondName.getText().isEmpty()){
+            new Alert(Alert.AlertType.ERROR,"Enter all fields").show();
+            return;
+        }
         try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement stm = connection.prepareStatement("INSERT INTO users (username, password, first_name, last_name) " +
-                    "VALUES (?,?,?,?)");
-            stm.setObject(1, txtUsername.getText());
-            stm.setObject(2, txtPwd.getText());
-            stm.setObject(3, txtFirstName.getText());
-            stm.setObject(4, txtSecondName.getText());
-            int affectedRows = stm.executeUpdate();
-            if (affectedRows > 0) {
+            boolean isAdded = UserController.addUser(txtUsername.getText(),txtPwd.getText(),txtFirstName.getText(),txtSecondName.getText());
+            if (isAdded) {
                 txtUsername.clear();
                 txtPwd.clear();
                 txtFirstName.clear();

@@ -26,6 +26,7 @@ public class EditUserProfileFormController {
         this.currentUser = user;
     }
     public void setUserDetails(){
+        //setting the parameters of user object
         txtUsernameChange.setText(currentUser.getUsername());
         txtFirstNameChange.setText(currentUser.getFirstName());
         txtLastNameChange.setText(currentUser.getLastName());
@@ -33,21 +34,21 @@ public class EditUserProfileFormController {
     }
 
     public void updateAccountOnAction(ActionEvent actionEvent) {
+        //checking the fields
+        if(txtUsernameChange.getText().isEmpty() || txtFirstNameChange.getText().isEmpty() ||
+                txtLastNameChange.getText().isEmpty() || txtPwdChange.getText().isEmpty()){
+            new Alert(Alert.AlertType.ERROR,"Invalid User details!").show();
+            return;
+        }
         String username = txtUsernameChange.getText();
         String firstName = txtFirstNameChange.getText();
         String lastName = txtLastNameChange.getText();
         String password = txtPwdChange.getText();
         try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            String sql = "UPDATE users SET username=?, first_name=?, last_name=?, password=? WHERE username=?";
-            PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setString(1,username);
-            stm.setString(2,firstName);
-            stm.setString(3,lastName);
-            stm.setString(4,password);
-            stm.setString(5,currentUser.getUsername());
-            int affectedRows = stm.executeUpdate();
-            if(affectedRows>0){
+            //passing into userCOntroller updateArtist method
+            boolean isUpdated = UserController.updateUser(username,firstName,lastName,password,currentUser.getUsername());
+            if(isUpdated){
+                //updating the object
                 currentUser.setUsername(username);
                 currentUser.setFirstName(firstName);
                 currentUser.setLastName(lastName);
@@ -65,6 +66,7 @@ public class EditUserProfileFormController {
     public void backToHomeOnAction(ActionEvent actionEvent) throws IOException {
         try {
             FXMLLoader loader;
+            //if the user is vip, the form context that should be catached is different
             if(currentUser.isVip()){
                 loader = new FXMLLoader(getClass().getResource("../view/VipDashboardForm.fxml"));
                 Scene scene = new Scene(loader.load());

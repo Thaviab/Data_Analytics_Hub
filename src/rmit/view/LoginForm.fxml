@@ -37,12 +37,12 @@
       <Text layoutX="-189.0" layoutY="-43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
       <TextField fx:id="txtUsername" layoutX="486.0" layoutY="211.0" prefHeight="28.0" prefWidth="267.0" promptText="Username" style="-fx-border-width: 0px 0px 2px 0px; -fx-background-color: transparent; -fx-border-color: #0598ff;" />
       <PasswordField fx:id="txtPassword" layoutX="487.0" layoutY="250.0" prefHeight="28.0" prefWidth="267.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-color: #0598ff; -fx-border-width: 0px 0px 2px 0px;" />
-      <AnchorPane layoutY="-3.0" prefHeight="706.0" prefWidth="379.0" style="-fx-background-color: #1E90FF;">
+      <AnchorPane layoutY="-1.0" prefHeight="702.0" prefWidth="379.0" style="-fx-background-color: #1E90FF;">
          <children>
             <FontAwesomeIconView fill="#fffefe" glyphName="BRIEFCASE" layoutX="150.0" layoutY="257.0" size="80" />
-            <Text fill="WHITE" layoutX="99.0" layoutY="308.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Social Media Analyzer">
+            <Text fill="WHITE" layoutX="91.0" layoutY="308.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Social Media Analyzer">
                <font>
-                  <Font size="20.0" />
+                  <Font name="System Bold" size="20.0" />
                </font>
             </Text>
          </children>

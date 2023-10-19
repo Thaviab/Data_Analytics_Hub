@@ -1,43 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="edtiUserProfileFormContext" prefHeight="600.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rmit.control.EditUserProfileFormController">
+<AnchorPane fx:id="edtiUserProfileFormContext" prefHeight="600.0" prefWidth="750.0" style="-fx-background-color: #F8F8FF;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rmit.control.EditUserProfileFormController">
    <children>
-      <Label layoutX="288.0" layoutY="31.0" text="Profile Settings">
-         <font>
-            <Font name="System Bold" size="24.0" />
-         </font>
-      </Label>
-      <Label layoutX="83.0" layoutY="126.0" prefHeight="26.0" prefWidth="82.0" text="Username: ">
+      <Label layoutX="83.0" layoutY="276.0" prefHeight="26.0" prefWidth="82.0" text="Username: ">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Label layoutX="82.0" layoutY="181.0" text="First Name: ">
+      <Label layoutX="82.0" layoutY="331.0" text="First Name: ">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Label layoutX="82.0" layoutY="232.0" text="Last Name: ">
+      <Label layoutX="82.0" layoutY="382.0" text="Last Name: ">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Label layoutX="85.0" layoutY="287.0" text="Password: ">
+      <Label layoutX="85.0" layoutY="437.0" text="Password: ">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <TextField fx:id="txtUsernameChange" layoutX="214.0" layoutY="127.0" prefHeight="26.0" prefWidth="463.0" />
-      <TextField fx:id="txtFirstNameChange" layoutX="214.0" layoutY="178.0" prefHeight="26.0" prefWidth="463.0" />
-      <TextField fx:id="txtLastNameChange" layoutX="214.0" layoutY="229.0" prefHeight="26.0" prefWidth="463.0" />
-      <TextField fx:id="txtPwdChange" layoutX="214.0" layoutY="284.0" prefHeight="26.0" prefWidth="463.0" />
-      <Button layoutX="583.0" layoutY="361.0" mnemonicParsing="false" onAction="#updateAccountOnAction" prefHeight="26.0" prefWidth="94.0" text="Update" />
-      <Button layoutX="635.0" layoutY="36.0" mnemonicParsing="false" onAction="#backToHomeOnAction" prefHeight="26.0" prefWidth="94.0" text="Back" />
+      <TextField fx:id="txtUsernameChange" layoutX="214.0" layoutY="277.0" prefHeight="26.0" prefWidth="463.0" />
+      <TextField fx:id="txtFirstNameChange" layoutX="214.0" layoutY="328.0" prefHeight="26.0" prefWidth="463.0" />
+      <TextField fx:id="txtLastNameChange" layoutX="214.0" layoutY="379.0" prefHeight="26.0" prefWidth="463.0" />
+      <TextField fx:id="txtPwdChange" layoutX="214.0" layoutY="434.0" prefHeight="26.0" prefWidth="463.0" />
+      <Button layoutX="582.0" layoutY="491.0" mnemonicParsing="false" onAction="#updateAccountOnAction" prefHeight="26.0" prefWidth="94.0" style="-fx-background-color: #1E90FF;" text="Update" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Button>
+      <AnchorPane prefHeight="246.0" prefWidth="750.0" style="-fx-background-color: #1E90FF;">
+         <children>
+            <FontAwesomeIconView glyphName="USER" layoutX="339.0" layoutY="158.0" size="100" />
+            <Button layoutX="640.0" layoutY="20.0" mnemonicParsing="false" onAction="#backToHomeOnAction" prefHeight="26.0" prefWidth="94.0" style="-fx-background-color: white;" text="Back" textFill="DODGERBLUE">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

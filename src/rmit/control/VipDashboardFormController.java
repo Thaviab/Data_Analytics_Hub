@@ -50,16 +50,19 @@ public class VipDashboardFormController {
 
     @FXML
     private void initialize(){
+        //ensuring the welcome anchor pane is set visible and in front when dashboard begins
         welcomeFormContext.setVisible(true);
         welcomeFormContext.toFront();
 
     }
 
     public void setUser(User user){
+        //getting user object to display yhe name
         this.currentUser = user;
         lblName.setText(currentUser.getFirstName()+" "+currentUser.getLastName());
     }
     public void logoutOnAction(ActionEvent actionEvent) throws IOException {
+        //getting confirmation
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"Are you sure?", ButtonType.YES,ButtonType.NO);
         Optional<ButtonType> type = alert.showAndWait();
         if (type.get()==ButtonType.YES){
@@ -82,26 +85,16 @@ public class VipDashboardFormController {
     }
 
     public void addPostOnAction(ActionEvent actionEvent) {
-        if(txtAddId.getText().isEmpty() || txtAddContent.getText().isEmpty() || txtAddAuthor.getText().isEmpty() ||
-                txtAddShares.getText().isEmpty() || txtAddShares.getText().isEmpty()){
-            new Alert(Alert.AlertType.ERROR, "Post adding unsucessfull").show();
-            return;
-        }
+        //getting the local time
         LocalDateTime currentDateTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         String formattedDateTime = currentDateTime.format(formatter);
         try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement stm = connection.prepareStatement("INSERT INTO posts (postId, content, author, noOfLikes, noOfShares, dateTime)"+
-                    "VALUES (?,?,?,?,?,?)");
-            stm.setString(1,txtAddId.getText());
-            stm.setString(2,txtAddContent.getText());
-            stm.setString(3,txtAddAuthor.getText());
-            stm.setInt(4, Integer.parseInt(txtAddLikes.getText()));
-            stm.setInt(5, Integer.parseInt(txtAddShares.getText()));
-            stm.setString(6,formattedDateTime);
-            int affrectedRows = stm.executeUpdate();
-            if (affrectedRows > 0) {
+            //passing to addPost in PostController
+            boolean isAdded = PostController.addPost(Integer.parseInt(txtAddId.getText()),
+                    txtAddContent.getText(),txtAddAuthor.getText(),Integer.parseInt(txtAddLikes.getText()),
+                    Integer.parseInt(txtAddShares.getText()),formattedDateTime);
+            if (isAdded) {
                 txtAddId.clear();
                 txtAddContent.clear();
                 txtAddAuthor.clear();
@@ -111,64 +104,64 @@ public class VipDashboardFormController {
             }else {
                 new Alert(Alert.AlertType.INFORMATION, "Post adding unsucessfull").show();
             }
-        } catch (SQLException | ClassNotFoundException | NumberFormatException e) {
+        }catch (NumberFormatException e){
+            new Alert(Alert.AlertType.ERROR,"Invalid inputs. Try Again").show();
+        } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
     }
 
     public void retrievePostOnAction(ActionEvent actionEvent) {
-        if(txtRetId.getText().isEmpty()){
-            new Alert(Alert.AlertType.ERROR, "Invalid ID").show();
+        //checking if the input is null
+        if(txtRetId.getText() == null || txtRetId.getText().trim().isEmpty()){
+            new Alert(Alert.AlertType.ERROR,"Invalid ID. Please try again");
             return;
         }
-        int postId = Integer.parseInt(txtRetId.getText());
+
         try {
-            Statement stm = DBConnection.getInstance().getConnection().createStatement();
-            ResultSet rst = stm.executeQuery("SELECT * FROM posts WHERE postId='"+postId+"'");
-            StringBuilder displayPost = new StringBuilder();
-            if(rst.next()){
-                displayPost.append("Post ID: "+rst.getInt("postID")+"\nContent"
-                        +rst.getString("content")+"\nAuthor: "+rst.getString("author")
-                        +"\nNo of Likes: "+rst.getInt("noOfLikes")+"\nNo of Shares: "+rst.getInt("noOfShares")
-                        +"\nDate & Time: "+rst.getString("dateTime"));
+            int postId = Integer.parseInt(txtRetId.getText());
+            //passing postId to execute the query
+            Posts post = PostController.searchPost(postId);
+            if(post != null){
+                StringBuilder displayPost = new StringBuilder();
+                displayPost.append("Post ID: "+post.getPostID()+"\nContent"
+                        +post.getContent()+"\nAuthor: "+post.getAuthor()
+                        +"\nNo of Likes: "+post.getNoOfLikes()+"\nNo of Shares: "+post.getNoOfShares()
+                        +"\nDate & Time: "+post.getDateTime());
                 txtAreaRetrievePost.setText(displayPost.toString());
-            }else {
-                new Alert(Alert.AlertType.WARNING,"No post found with the post ID!").show();
-                txtRetId.clear();
-                txtAreaRetrievePost.clear();
             }
+        }catch (NumberFormatException e){
+            new Alert(Alert.AlertType.ERROR,"Invalid post ID. Try Again").show();
+            txtRetId.clear();
         } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
         }
     }
     public void removePostOnAction(ActionEvent actionEvent) {
-        if(txtDeletePostId.getText().isEmpty()){
-            new Alert(Alert.AlertType.ERROR,"Invalid ID. Please try again").show();
+        //checking if the input is null
+        if(txtDeletePostId.getText() == null || txtDeletePostId.getText().trim().isEmpty()){
+            new Alert(Alert.AlertType.ERROR,"Invalid ID. Please try again");
             return;
         }
-        int postId = Integer.parseInt(txtDeletePostId.getText());
         try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            String sql = "DELETE FROM posts WHERE postId='"+postId+"'";
-            PreparedStatement stm = connection.prepareStatement(sql);
-            int affectedRows = stm.executeUpdate();
-            if(affectedRows>0){
+            int postId = Integer.parseInt(txtDeletePostId.getText());
+            //calling delete query
+            boolean isRemoved = PostController.deletePost(postId);
+            if(isRemoved){
                 txtDeletePostId.clear();
                 new Alert(Alert.AlertType.INFORMATION,"Post removed!").show();
             }else {
                 new Alert(Alert.AlertType.ERROR,"Failed to remove the post. Please try again").show();
-                txtDeletePostId.clear();
             }
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (NumberFormatException e){
+            new Alert(Alert.AlertType.ERROR,"Invalid post ID. Try Again").show();
+            txtDeletePostId.clear();
+        }catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
         }
     }
 
     public void retrieveNPostsOnAction(ActionEvent actionEvent) {
-        if(txtRetNPosts.getText().isEmpty()){
-            new Alert(Alert.AlertType.ERROR,"Invalid number. Please try again").show();
-            return;
-        }
         try {
             int n = Integer.parseInt(txtRetNPosts.getText());
             Statement stm = DBConnection.getInstance().getConnection().createStatement();
@@ -192,30 +185,33 @@ public class VipDashboardFormController {
                         .append("\n-----------------------------------------------------\n");
             }
             txtAreaTopNPosts.setText(displayText.toString());
-        } catch (SQLException | ClassNotFoundException | NumberFormatException e) {
+        }catch (NumberFormatException e){
+            new Alert(Alert.AlertType.ERROR,"Invalid post ID. Try Again").show();
+            txtRetNPosts.clear();
+        } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
         }
     }
 
     public void exportPostOnAction(ActionEvent actionEvent) {
-        String postId = txtExportPost.getText();
-        if(postId == null){
+        //checking if the input is null or empty
+        if(txtExportPost == null || txtExportPost.getText().trim().isEmpty()){
             new Alert(Alert.AlertType.ERROR,"Please provide a post ID").show();
             return;
         }
         try {
-            Statement stm = DBConnection.getInstance().getConnection().createStatement();
-            ResultSet rst = stm.executeQuery("SELECT * FROM posts WHERE postId='"+Integer.parseInt(postId)+"'");
-            if(!rst.next()){
+            int postId = Integer.parseInt(txtExportPost.getText());
+            Posts exportPost = PostController.searchPost(postId);
+            if(exportPost == null){
                 new Alert(Alert.AlertType.ERROR,"No post found with the given post ID").show();
                 return;
             }
             //fetching post data
-            String content = rst.getString("content");
-            String author = rst.getString("author");
-            int noOfLikes = rst.getInt("noOfLikes");
-            int noOfShares = rst.getInt("noOfShares");
-            String dateTime = rst.getString("dateTime");
+            String content = exportPost.getContent();
+            String author = exportPost.getAuthor();
+            int noOfLikes = exportPost.getNoOfLikes();
+            int noOfShares = exportPost.getNoOfShares();
+            String dateTime = exportPost.getDateTime();
 
             //Using javaFX's FileChooser
             FileChooser fileChooser = new FileChooser();
@@ -225,6 +221,7 @@ public class VipDashboardFormController {
             //Checking the file
             if(file != null){
                 try (FileWriter fileWriter = new FileWriter(file)){
+                    //writing the file
                     fileWriter.write(postId+", "+content+", "+author+", "+noOfLikes+", "+noOfShares+", "+dateTime+"\n");
                 } catch (IOException e) {
                     new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
@@ -232,7 +229,10 @@ public class VipDashboardFormController {
                 new Alert(Alert.AlertType.INFORMATION,"Post data exported sucessfully").show();
             }
 
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (NumberFormatException e){
+            new Alert(Alert.AlertType.ERROR,"Invalid post ID. Try Again").show();
+            txtExportPost.clear();
+        }catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR,"Error exporting post data: "+e.getMessage()).show();
         }
     }
@@ -252,16 +252,8 @@ public class VipDashboardFormController {
 
                 while ((line = br.readLine()) != null){
                     String[] lineData = line.split(",");
-
-                    //checking the format of the csv file
-                    if(lineData.length != 6){
-                        new Alert(Alert.AlertType.ERROR,"Wrong format in the csv file").show();
-                        return;
-                    }
-
                     int id = Integer.parseInt(lineData[0].trim());
 
-                    //first checking whether the post is in the db
                     if(!idCheck(id)){
                         PreparedStatement stm = connection.prepareStatement("INSERT INTO posts (postId, content, author, noOfLikes, noOfShares, dateTime) " +
                                 "VALUES (?,?,?,?,?,?)");

@@ -12,88 +12,6 @@
 
 <AnchorPane fx:id="vipDashboardFormContext" prefHeight="700.0" prefWidth="1200.0" style="-fx-background-color: #F5F5DC;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rmit.control.VipDashboardFormController">
     <children>
-        <AnchorPane fx:id="retreiveTopPostsFormContext" layoutX="300.0" layoutY="100.0" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #00FFFF;">
-            <children>
-                <TextField fx:id="txtRetNPosts" layoutX="94.0" layoutY="147.0" prefHeight="30.0" prefWidth="562.0" promptText="Enter the value of N">
-                    <font>
-                        <Font size="14.0" />
-                    </font>
-                </TextField>
-                <Button layoutX="666.0" layoutY="148.0" mnemonicParsing="false" onAction="#retrieveNPostsOnAction" prefHeight="31.0" prefWidth="206.0" style="-fx-border-color: #00008B;" text="Retrieve">
-                    <font>
-                        <Font name="System Bold" size="14.0" />
-                    </font>
-                    <cursor>
-                        <Cursor fx:constant="HAND" />
-                    </cursor>
-                </Button>
-                <TextArea fx:id="txtAreaTopNPosts" editable="false" layoutX="94.0" layoutY="190.0" prefHeight="337.0" prefWidth="778.0" />
-                <Text layoutX="63.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Retrieves the top 'N' number of posts based on the number of likes">
-                    <font>
-                        <Font name="System Bold" size="16.0" />
-                    </font>
-                </Text>
-            </children>
-        </AnchorPane>
-        <AnchorPane fx:id="exportPostFormContext" layoutX="300.0" layoutY="100.0" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #00FFFF;">
-            <children>
-                <TextField fx:id="txtExportPost" layoutX="72.0" layoutY="208.0" prefHeight="30.0" prefWidth="378.0" promptText="Enter post ID to export">
-                    <font>
-                        <Font size="14.0" />
-                    </font>
-                </TextField>
-                <Button layoutX="545.0" layoutY="208.0" mnemonicParsing="false" onAction="#exportPostOnAction" prefHeight="31.0" prefWidth="215.0" style="-fx-border-color: #00008B;" text="Export">
-                    <font>
-                        <Font name="System Bold" size="14.0" />
-                    </font>
-                    <cursor>
-                        <Cursor fx:constant="HAND" />
-                    </cursor>
-                </Button>
-                <Text layoutX="64.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please specify a location when saving the file!">
-                    <font>
-                        <Font name="System Bold" size="18.0" />
-                    </font>
-                </Text>
-            </children>
-        </AnchorPane>
-        <AnchorPane fx:id="addPostFormContext" layoutX="300.0" layoutY="100.0" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #00FFFF;">
-            <children>
-                <TextField fx:id="txtAddId" layoutX="133.0" layoutY="89.0" prefHeight="26.0" prefWidth="687.0" promptText="Enter Post ID">
-                    <font>
-                        <Font size="16.0" />
-                    </font>
-                </TextField>
-                <TextField fx:id="txtAddContent" alignment="TOP_LEFT" layoutX="133.0" layoutY="135.0" prefHeight="85.0" prefWidth="687.0" promptText="Enter Post Content">
-                    <font>
-                        <Font size="16.0" />
-                    </font>
-                </TextField>
-                <TextField fx:id="txtAddAuthor" layoutX="132.0" layoutY="229.0" prefHeight="26.0" prefWidth="687.0" promptText="Enter Author">
-                    <font>
-                        <Font size="16.0" />
-                    </font>
-                </TextField>
-                <TextField fx:id="txtAddLikes" layoutX="132.0" layoutY="275.0" prefHeight="26.0" prefWidth="687.0" promptText="Enter Number Of Likes">
-                    <font>
-                        <Font size="16.0" />
-                    </font>
-                </TextField>
-                <TextField fx:id="txtAddShares" layoutX="132.0" layoutY="321.0" prefHeight="26.0" prefWidth="686.0" promptText="Enter Number Of Shares">
-                    <font>
-                        <Font size="16.0" />
-                    </font>
-                </TextField>
-                <Button layoutX="666.0" layoutY="411.0" mnemonicParsing="false" onAction="#addPostOnAction" prefHeight="26.0" prefWidth="150.0" style="-fx-border-color: #00008B;" text="ADD POST">
-                    <font>
-                        <Font name="System Bold" size="13.0" />
-                    </font>
-                    <cursor>
-                        <Cursor fx:constant="HAND" />
-                    </cursor>
-                </Button>
-            </children>
-        </AnchorPane>
         <AnchorPane fx:id="removePostFormContext" layoutX="300.0" layoutY="100.0" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #00FFFF;">
             <children>
                 <TextField fx:id="txtDeletePostId" layoutX="78.0" layoutY="222.0" prefHeight="31.0" prefWidth="753.0" promptText="Enter post ID to delete">
@@ -139,21 +57,6 @@
             </children>
         </AnchorPane>
         <AnchorPane fx:id="displayPieCHartFormContext" layoutX="300.0" layoutY="100.0" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #00FFFF;" />
-        <AnchorPane fx:id="retrievePostFormContext" layoutX="300.0" layoutY="100.0" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #00FFFF;">
-            <children>
-                <TextField fx:id="txtRetId" layoutX="65.0" layoutY="103.0" prefHeight="37.0" prefWidth="574.0" promptText="Enter post ID">
-                    <font>
-                        <Font size="16.0" />
-                    </font>
-                </TextField>
-                <Button layoutX="646.0" layoutY="102.0" mnemonicParsing="false" onAction="#retrievePostOnAction" prefHeight="38.0" prefWidth="206.0" text="Retrieve Post">
-                    <font>
-                        <Font name="System Bold" size="14.0" />
-                    </font>
-                </Button>
-                <TextArea fx:id="txtAreaRetrievePost" layoutX="65.0" layoutY="166.0" prefHeight="303.0" prefWidth="786.0" />
-            </children>
-        </AnchorPane>
         <Button layoutX="1096.0" layoutY="12.0" mnemonicParsing="false" onAction="#logoutOnAction" prefHeight="26.0" prefWidth="94.0" text="Logout">
             <font>
                 <Font name="System Bold" size="14.0" />
@@ -244,9 +147,9 @@
                 </Label>
             </children>
         </AnchorPane>
-        <Text fill="DARKBLUE" layoutX="596.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SOCIAL MEDIA ANALYZER" wrappingWidth="368.69573974609375">
+        <Text fill="DARKBLUE" layoutX="436.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SOCIAL MEDIA ANALYZER" wrappingWidth="574.3999999999999">
             <font>
-                <Font name="Chiller" size="37.0" />
+                <Font name="Elephant" size="32.0" />
             </font>
         </Text>
         <AnchorPane fx:id="welcomeFormContext" layoutX="300.0" layoutY="101.0" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #00FFFF;">
@@ -289,6 +192,103 @@
                 <Text layoutX="114.0" layoutY="413.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Allows you to bulk import social media posts from a .csv file">
                     <font>
                         <Font name="System Bold" size="14.0" />
+                    </font>
+                </Text>
+            </children>
+        </AnchorPane>
+        <AnchorPane fx:id="addPostFormContext" layoutX="300.0" layoutY="100.0" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #00FFFF;">
+            <children>
+                <TextField fx:id="txtAddId" layoutX="133.0" layoutY="89.0" prefHeight="26.0" prefWidth="687.0" promptText="Enter Post ID">
+                    <font>
+                        <Font size="16.0" />
+                    </font>
+                </TextField>
+                <TextField fx:id="txtAddContent" alignment="TOP_LEFT" layoutX="133.0" layoutY="135.0" prefHeight="85.0" prefWidth="687.0" promptText="Enter Post Content">
+                    <font>
+                        <Font size="16.0" />
+                    </font>
+                </TextField>
+                <TextField fx:id="txtAddAuthor" layoutX="132.0" layoutY="229.0" prefHeight="26.0" prefWidth="687.0" promptText="Enter Author">
+                    <font>
+                        <Font size="16.0" />
+                    </font>
+                </TextField>
+                <TextField fx:id="txtAddLikes" layoutX="132.0" layoutY="275.0" prefHeight="26.0" prefWidth="687.0" promptText="Enter Number Of Likes">
+                    <font>
+                        <Font size="16.0" />
+                    </font>
+                </TextField>
+                <TextField fx:id="txtAddShares" layoutX="132.0" layoutY="321.0" prefHeight="26.0" prefWidth="686.0" promptText="Enter Number Of Shares">
+                    <font>
+                        <Font size="16.0" />
+                    </font>
+                </TextField>
+                <Button layoutX="666.0" layoutY="411.0" mnemonicParsing="false" onAction="#addPostOnAction" prefHeight="26.0" prefWidth="150.0" style="-fx-border-color: #00008B;" text="ADD POST">
+                    <font>
+                        <Font name="System Bold" size="13.0" />
+                    </font>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </Button>
+            </children>
+        </AnchorPane>
+        <AnchorPane fx:id="retrievePostFormContext" layoutX="300.0" layoutY="100.0" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #00FFFF;">
+            <children>
+                <TextField fx:id="txtRetId" layoutX="65.0" layoutY="103.0" prefHeight="37.0" prefWidth="574.0" promptText="Enter post ID">
+                    <font>
+                        <Font size="16.0" />
+                    </font>
+                </TextField>
+                <Button layoutX="646.0" layoutY="102.0" mnemonicParsing="false" onAction="#retrievePostOnAction" prefHeight="38.0" prefWidth="206.0" text="Retrieve Post">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                </Button>
+                <TextArea fx:id="txtAreaRetrievePost" layoutX="65.0" layoutY="166.0" prefHeight="303.0" prefWidth="786.0" />
+            </children>
+        </AnchorPane>
+        <AnchorPane fx:id="retreiveTopPostsFormContext" layoutX="300.0" layoutY="100.0" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #00FFFF;">
+            <children>
+                <TextField fx:id="txtRetNPosts" layoutX="94.0" layoutY="147.0" prefHeight="30.0" prefWidth="562.0" promptText="Enter the value of N">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </TextField>
+                <Button layoutX="666.0" layoutY="148.0" mnemonicParsing="false" onAction="#retrieveNPostsOnAction" prefHeight="31.0" prefWidth="206.0" style="-fx-border-color: #00008B;" text="Retrieve">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </Button>
+                <TextArea fx:id="txtAreaTopNPosts" editable="false" layoutX="94.0" layoutY="190.0" prefHeight="337.0" prefWidth="778.0" />
+                <Text layoutX="63.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Retrieves the top 'N' number of posts based on the number of likes">
+                    <font>
+                        <Font name="System Bold" size="16.0" />
+                    </font>
+                </Text>
+            </children>
+        </AnchorPane>
+        <AnchorPane fx:id="exportPostFormContext" layoutX="300.0" layoutY="100.0" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #00FFFF;">
+            <children>
+                <TextField fx:id="txtExportPost" layoutX="72.0" layoutY="208.0" prefHeight="30.0" prefWidth="378.0" promptText="Enter post ID to export">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </TextField>
+                <Button layoutX="545.0" layoutY="208.0" mnemonicParsing="false" onAction="#exportPostOnAction" prefHeight="31.0" prefWidth="215.0" style="-fx-border-color: #00008B;" text="Export">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </Button>
+                <Text layoutX="64.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please specify a location when saving the file!">
+                    <font>
+                        <Font name="System Bold" size="18.0" />
                     </font>
                 </Text>
             </children>

@@ -26,49 +26,32 @@ public class LoginFormController {
 
     public void loginOnAction(ActionEvent actionEvent) throws IOException {
         try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            String sql = "SELECT * FROM users WHERE username=?";
-            PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setString(1,txtUsername.getText());
-            ResultSet rst = stm.executeQuery();
-            if(rst.next()){
-                String storedPassword = rst.getString("password");
-                if (txtPassword.getText().equals(storedPassword)){
-                    String username = rst.getString("username");
-                    String password = rst.getString("password");
-                    String firstName = rst.getString("first_name");
-                    String lastName = rst.getString("last_name");
-                    boolean isVip = rst.getBoolean("is_vip");
-                    //System.out.println(username+" "+password+" "+firstName+" "+lastName+" "+isVip);
-                    currentUser = new User(username,password,firstName,lastName,isVip);
-                    new Alert(Alert.AlertType.INFORMATION,"Login Sucessfull").show();
-                    FXMLLoader loader;
-                    if(isVip){
-                        loader = new FXMLLoader(getClass().getResource("../view/VipDashboardForm.fxml"));
-                    }else {
-                        loader = new FXMLLoader(getClass().getResource("../view/DashboardForm.fxml"));
-                    }
-                    Scene scene = new Scene(loader.load());
-                    //Fetching the controller and passing user
-                    if(isVip){
-                        VipDashboardFormController vipDashboardFormController = loader.getController();
-                        vipDashboardFormController.setUser(currentUser);
-                    }
-                    else {
-                        DashboardFormController dashboardFormController = loader.getController();
-                        dashboardFormController.setUser(currentUser);
-                    }
-                    Stage stage = (Stage) LoginFormContext.getScene().getWindow();
-                    stage.setScene(scene);
-                    stage.centerOnScreen();
-/*                    Stage stage = (Stage) LoginFormContext.getScene().getWindow();
-                    stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("../view/DashboardForm.fxml"))));
-                    stage.centerOnScreen();*/
+            currentUser = UserController.searchUser(txtUsername.getText(),txtPassword.getText());
+            if(currentUser!=null){
+                new Alert(Alert.AlertType.INFORMATION,"Login Sucessfull").show();
+                FXMLLoader loader;
+                if(currentUser.isVip()){
+                    //setting up the vip user interface loader
+                    loader = new FXMLLoader(getClass().getResource("../view/VipDashboardForm.fxml"));
                 }else {
-                    new Alert(Alert.AlertType.WARNING,"Password Incorrect. Please try again!").show();
+                    //setting up the normal user interface loader
+                    loader = new FXMLLoader(getClass().getResource("../view/DashboardForm.fxml"));
                 }
+                //setting the stage depending on the user
+                Scene scene = new Scene(loader.load());
+                if(currentUser.isVip()){
+                    VipDashboardFormController vipDashboardFormController = loader.getController();
+                    vipDashboardFormController.setUser(currentUser);
+                }
+                else {
+                    DashboardFormController dashboardFormController = loader.getController();
+                    dashboardFormController.setUser(currentUser);
+                }
+                Stage stage = (Stage) LoginFormContext.getScene().getWindow();
+                stage.setScene(scene);
+                stage.centerOnScreen();
             }else {
-                new Alert(Alert.AlertType.WARNING,"Username Incorrect. Please try again!").show();
+                new Alert(Alert.AlertType.ERROR,"Incorrect Credentials. Please try again").show();
             }
         }catch (SQLException | ClassNotFoundException ex){
             new Alert(Alert.AlertType.ERROR,"Error in when logging into the account: "+ex.getMessage());

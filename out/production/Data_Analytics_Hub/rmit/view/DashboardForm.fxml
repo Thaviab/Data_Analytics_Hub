@@ -171,9 +171,9 @@
             </Button>
          </children>
       </AnchorPane>
-      <Text fill="DARKBLUE" layoutX="556.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SOCIAL MEDIA ANALYZER" wrappingWidth="368.69573974609375">
+      <Text fill="DARKBLUE" layoutX="454.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SOCIAL MEDIA ANALYZER" wrappingWidth="572.0">
          <font>
-            <Font name="Chiller" size="37.0" />
+            <Font name="Elephant" size="32.0" />
          </font>
       </Text>
       <AnchorPane fx:id="welcomeFormContext" layoutX="300.0" layoutY="100.0" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #00FFFF;">
@@ -203,32 +203,6 @@
                   <Font name="System Bold" size="19.0" />
                </font>
             </Text>
-         </children>
-      </AnchorPane>
-      <AnchorPane fx:id="retrieveTopNPostsFormContext" layoutX="300.0" layoutY="100.0" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #00FFFF;">
-         <children>
-            <TextField fx:id="txtRetNPosts" layoutX="69.0" layoutY="158.0" prefHeight="38.0" prefWidth="572.0" promptText="Enter the value of N">
-               <cursor>
-                  <Cursor fx:constant="TEXT" />
-               </cursor>
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </TextField>
-            <Button layoutX="650.0" layoutY="158.0" mnemonicParsing="false" onAction="#retrieveNPostsOnAction" prefHeight="38.0" prefWidth="198.0" text="Retrieve">
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-               <font>
-                  <Font name="System Bold" size="16.0" />
-               </font>
-            </Button>
-            <Text layoutX="65.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Retrieves the top 'N' number of posts based on the number of likes">
-               <font>
-                  <Font name="System Bold" size="16.0" />
-               </font>
-            </Text>
-            <TextArea fx:id="txtAreaTopNPosts" editable="false" layoutX="69.0" layoutY="216.0" prefHeight="337.0" prefWidth="778.0" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="retrievePostFormContext" layoutX="300.0" layoutY="100.0" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #00FFFF;">
@@ -304,6 +278,32 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="retrieveTopNPostsFormContext" layoutX="300.0" layoutY="100.0" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #00FFFF;">
+         <children>
+            <TextField fx:id="txtRetNPosts" layoutX="69.0" layoutY="158.0" prefHeight="38.0" prefWidth="572.0" promptText="Enter the value of N">
+               <cursor>
+                  <Cursor fx:constant="TEXT" />
+               </cursor>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </TextField>
+            <Button layoutX="650.0" layoutY="158.0" mnemonicParsing="false" onAction="#retrieveNPostsOnAction" prefHeight="38.0" prefWidth="198.0" text="Retrieve">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Button>
+            <Text layoutX="65.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Retrieves the top 'N' number of posts based on the number of likes">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Text>
+            <TextArea fx:id="txtAreaTopNPosts" editable="false" layoutX="69.0" layoutY="216.0" prefHeight="337.0" prefWidth="778.0" />
          </children>
       </AnchorPane>
    </children>
