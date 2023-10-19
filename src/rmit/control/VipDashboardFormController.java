@@ -214,48 +214,6 @@ public class VipDashboardFormController {
             new Alert(Alert.AlertType.ERROR,"Error exporting post data: "+e.getMessage()).show();
         }
     }
-
-    public void displayPieChartOnAction(ActionEvent actionEvent) {
-        int count1 = 0;
-        int count2 = 0;
-        int count3 = 0;
-
-        try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement stmt1 = connection.prepareStatement("SELECT COUNT(*) FROM posts WHERE noOfShares BETWEEN 0 AND 99");
-            ResultSet rst1 = stmt1.executeQuery();
-            if (rst1.next()) {
-                count1 = rst1.getInt(1);
-            }
-
-            PreparedStatement stmt2 = connection.prepareStatement("SELECT COUNT(*) FROM posts WHERE noOfShares BETWEEN 100 AND 999");
-            ResultSet rst2 = stmt2.executeQuery();
-            if (rst2.next()) {
-                count2 = rst2.getInt(1);
-            }
-
-            PreparedStatement stmt3 = connection.prepareStatement("SELECT COUNT(*) FROM posts WHERE noOfShares >= 1000");
-            ResultSet rst3 = stmt3.executeQuery();
-            if (rst3.next()) {
-                count3 = rst3.getInt(1);
-            }
-
-        } catch (SQLException | ClassNotFoundException e) {
-            new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
-        }
-        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
-                new PieChart.Data("0-99 #Shares", count1),
-                new PieChart.Data("100-999 #Shares", count2),
-                new PieChart.Data("1000+ #Shares", count3));
-
-        PieChart pieChart = new PieChart(pieChartData);
-        pieChart.setTitle("Distribution of Posts by Shares");
-        Scene pieChartScene = new Scene(pieChart, 500, 400);  // width and height values are adjustable
-        Stage pieChartStage = new Stage();
-        pieChartStage.setTitle("Distribution of Posts by Shares");
-        pieChartStage.setScene(pieChartScene);
-        pieChartStage.show();
-    }
     public void importFileOnAction(ActionEvent actionEvent) {
         //Filechooser to select csv file
         FileChooser fileSelect = new FileChooser();

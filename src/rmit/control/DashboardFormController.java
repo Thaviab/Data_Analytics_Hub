@@ -1,6 +1,7 @@
 package rmit.control;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -43,6 +44,20 @@ public class DashboardFormController {
     public TextField txtRetNPosts;
     public TextField txtExportPost;
     public Posts currentPost;
+    public AnchorPane exportPostFormContext;
+    public AnchorPane retrieveTopNPostsFormContext;
+    public TextArea txtAreaTopNPosts;
+    public AnchorPane removePostFormContext;
+    public AnchorPane retrievePostFormContext;
+    public AnchorPane addPostFormContext;
+    public AnchorPane welcomeFormContext;
+
+    @FXML
+    private void initialize(){
+        welcomeFormContext.setVisible(true);
+        welcomeFormContext.toFront();
+
+    }
     public void setUser(User user){
         this.currentUser = user;
         lblName.setText(currentUser.getFirstName()+" "+currentUser.getLastName());
@@ -176,14 +191,18 @@ public class DashboardFormController {
                         rst.getInt("noOfLikes"),rst.getInt("noOfShares"),rst.getString("dateTime"));
                 topPosts.add(post);
             }
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/RetrieveTopNPostsForm.fxml"));
-            Parent parent = loader.load();
-            RetrieveTopNPostsFormController retrieveTopNPostsFormController = loader.getController();
-            retrieveTopNPostsFormController.displayPosts(topPosts);
-            Stage stage = new Stage();
-            stage.setScene(new Scene(parent));
-            stage.setTitle("Top N Posts");
-            stage.show();
+            StringBuilder displayText = new StringBuilder();
+
+            for(Posts posts : topPosts){
+                displayText.append("ID: ").append(posts.getPostID())
+                        .append(", Content: ").append(posts.getContent())
+                        .append(", Author: ").append(posts.getAuthor())
+                        .append(", Likes: ").append(posts.getNoOfLikes())
+                        .append(", Shares: ").append(posts.getNoOfShares())
+                        .append(", Date & Time: ").append(posts.getDateTime())
+                        .append("\n-----------------------------------------------------\n");
+            }
+            txtAreaTopNPosts.setText(displayText.toString());
         } catch (SQLException | ClassNotFoundException | NumberFormatException e) {
             new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
         }
@@ -228,5 +247,25 @@ public class DashboardFormController {
             new Alert(Alert.AlertType.ERROR,"Error exporting post data: "+e.getMessage()).show();
         }
 
+    }
+
+    public void btnAddPostControlPanel(ActionEvent actionEvent) {
+        addPostFormContext.toFront();
+    }
+
+    public void btnRetrievePostControlPanel(ActionEvent actionEvent) {
+        retrievePostFormContext.toFront();
+    }
+
+    public void btnremovePostControlPanel(ActionEvent actionEvent) {
+        removePostFormContext.toFront();
+    }
+
+    public void btnTopPostControlPanel(ActionEvent actionEvent) {
+        retrieveTopNPostsFormContext.toFront();
+    }
+
+    public void btnExportPostControlPanel(ActionEvent actionEvent) {
+        exportPostFormContext.toFront();
     }
 }
