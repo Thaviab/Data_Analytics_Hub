@@ -58,6 +58,13 @@ public class DatabaseAccessCode {
         return stm.executeUpdate() > 0;
 
     }
+    //Delete user for test cases
+    public boolean deleteUser(String testUsername) throws SQLException, ClassNotFoundException {
+        Connection connection = DBConnection.getInstance().getConnection();
+        PreparedStatement stm = connection.prepareStatement("DELETE FROM users WHERE username='"+testUsername+"'");
+        return stm.executeUpdate() > 0;
+
+    }
 
 
     //-----------------------------Posts Database Controls----------------------//
@@ -110,5 +117,4 @@ public class DatabaseAccessCode {
         }
         return topPosts;
     }
-
 }
