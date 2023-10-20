@@ -4,15 +4,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import rmit.db.DBConnection;
+import rmit.dao.DatabaseAccessCode;
+import rmit.entity.User;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class CreateAccountFormController {
@@ -35,7 +33,10 @@ public class CreateAccountFormController {
             return;
         }
         try {
-            boolean isAdded = UserController.addUser(txtUsername.getText(),txtPwd.getText(),txtFirstName.getText(),txtSecondName.getText());
+            //using DatabaseAccessCode to execute sql
+            boolean isAdded = new DatabaseAccessCode().addUser(new User(txtUsername.getText(),txtPwd.getText(),
+                    txtFirstName.getText(),txtSecondName.getText()));
+
             if (isAdded) {
                 txtUsername.clear();
                 txtPwd.clear();

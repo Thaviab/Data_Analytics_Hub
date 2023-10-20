@@ -7,12 +7,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import rmit.db.DBConnection;
-import rmit.model.User;
+import rmit.dao.DatabaseAccessCode;
+import rmit.entity.User;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class EditUserProfileFormController {
@@ -26,7 +24,7 @@ public class EditUserProfileFormController {
         this.currentUser = user;
     }
     public void setUserDetails(){
-        //setting the parameters of user object
+        //setting the parameters of User object
         txtUsernameChange.setText(currentUser.getUsername());
         txtFirstNameChange.setText(currentUser.getFirstName());
         txtLastNameChange.setText(currentUser.getLastName());
@@ -45,8 +43,10 @@ public class EditUserProfileFormController {
         String lastName = txtLastNameChange.getText();
         String password = txtPwdChange.getText();
         try {
-            //passing into userCOntroller updateArtist method
-            boolean isUpdated = UserController.updateUser(username,firstName,lastName,password,currentUser.getUsername());
+            User updateUser = new User(username,password,firstName,lastName);
+            //passing into DatabaseAccessCode updateArtist method
+            boolean isUpdated = new DatabaseAccessCode().updateUser(updateUser,currentUser.getUsername());
+
             if(isUpdated){
                 //updating the object
                 currentUser.setUsername(username);
@@ -56,7 +56,7 @@ public class EditUserProfileFormController {
                 new Alert(Alert.AlertType.INFORMATION,"Profile updated sucessfully").show();
                 setUserDetails();
             }else {
-                new Alert(Alert.AlertType.ERROR,"Failed to update profile. Please check the user details").show();
+                new Alert(Alert.AlertType.ERROR,"Failed to update profile. Please check the User details").show();
             }
         }catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
@@ -66,7 +66,7 @@ public class EditUserProfileFormController {
     public void backToHomeOnAction(ActionEvent actionEvent) throws IOException {
         try {
             FXMLLoader loader;
-            //if the user is vip, the form context that should be catached is different
+            //if the User is vip, the form context that should be catached is different
             if(currentUser.isVip()){
                 loader = new FXMLLoader(getClass().getResource("../view/VipDashboardForm.fxml"));
                 Scene scene = new Scene(loader.load());

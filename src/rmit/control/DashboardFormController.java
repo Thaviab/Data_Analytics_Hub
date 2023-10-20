@@ -3,23 +3,20 @@ package rmit.control;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import rmit.db.DBConnection;
-import rmit.model.Posts;
-import rmit.model.User;
+import rmit.dao.DatabaseAccessCode;
+import rmit.entity.Posts;
+import rmit.entity.User;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.io.File;
@@ -60,12 +57,12 @@ public class DashboardFormController {
 
     }
     public void setUser(User user){
-        //setting the user and displaying the name
+        //setting the User and displaying the name
         this.currentUser = user;
         lblName.setText(currentUser.getFirstName()+" "+currentUser.getLastName());
     }
     public void logoutOnAction(ActionEvent actionEvent) throws IOException {
-        //getting confirmation from the user
+        //getting confirmation from the User
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"Are you sure?", ButtonType.YES,ButtonType.NO);
         Optional<ButtonType> type = alert.showAndWait();
         if (type.get()==ButtonType.YES){
@@ -77,19 +74,16 @@ public class DashboardFormController {
     }
 
     public void subscribeOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"Do you want to subscribe and be a VIP user?",ButtonType.YES,ButtonType.NO);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"Do you want to subscribe and be a VIP User?",ButtonType.YES,ButtonType.NO);
         Optional<ButtonType> type = alert.showAndWait();
         if(type.get()==ButtonType.YES){
             try {
-                Connection connection = DBConnection.getInstance().getConnection();
-                PreparedStatement stm = connection.prepareStatement("UPDATE users SET is_vip=? WHERE username=?");
-                stm.setBoolean(1,true);
-                stm.setString(2,currentUser.getUsername());
-                int affectedRows = stm.executeUpdate();
+                //passing to DatabaseAccessCode
+                boolean affectedRows = new DatabaseAccessCode().updateToVip(true, currentUser.getUsername());
                 //if updated it will return to login form
-                if(affectedRows>0){
+                if(affectedRows){
                     currentUser.setVip(true);
-                    new Alert(Alert.AlertType.INFORMATION,"You are now a VIP user! Log again to experience the premium features").showAndWait();
+                    new Alert(Alert.AlertType.INFORMATION,"You are now a VIP User! Log again to experience the premium features").showAndWait();
                     Stage stage = (Stage) dashboardFormContext.getScene().getWindow();
                     stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("../view/LoginForm.fxml"))));
                     stage.centerOnScreen();
@@ -121,10 +115,11 @@ public class DashboardFormController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         String formattedDateTime = currentDateTime.format(formatter);
         try {
-            //passing to addPost in PostController
-            boolean isAdded = PostController.addPost(Integer.parseInt(txtAddId.getText()),
+            Posts newPost = new Posts(Integer.parseInt(txtAddId.getText()),
                     txtAddContent.getText(),txtAddAuthor.getText(),Integer.parseInt(txtAddLikes.getText()),
                     Integer.parseInt(txtAddShares.getText()),formattedDateTime);
+            //passing to addPost in DatabaseAccessCode
+            boolean isAdded = new DatabaseAccessCode().addPost(newPost);
             if (isAdded) {
                 txtAddId.clear();
                 txtAddContent.clear();
@@ -152,7 +147,7 @@ public class DashboardFormController {
         try {
             int postId = Integer.parseInt(txtRetId.getText());
             //passing postId to execute the query
-            Posts post = PostController.searchPost(postId);
+            Posts post = new DatabaseAccessCode().searchPost(postId);
             //geeting parameter if post in not null
             if(post!=null){
                 txtRetContent.setText(post.getContent());
@@ -166,6 +161,10 @@ public class DashboardFormController {
         } catch (NumberFormatException e){
             new Alert(Alert.AlertType.ERROR,"Enter a valid post ID").show();
             txtRetId.clear();
+            txtRetAuthor.clear();
+            txtRetLikes.clear();
+            txtRetShares.clear();
+            txtRetDateTime.clear();
         }catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
         }
@@ -180,7 +179,7 @@ public class DashboardFormController {
         try {
             int postId = Integer.parseInt(txtDeletePostId.getText());
             //calling delete query
-            boolean isRemoved = PostController.deletePost(postId);
+            boolean isRemoved = new DatabaseAccessCode().deletePost(postId);
             if(isRemoved){
                 txtDeletePostId.clear();
                 new Alert(Alert.AlertType.INFORMATION,"Post removed!").show();
@@ -196,17 +195,15 @@ public class DashboardFormController {
     }
 
     public void retrieveNPostsOnAction(ActionEvent actionEvent) throws IOException {
+        if(txtRetNPosts.getText() == null || txtRetNPosts.getText().isEmpty()){
+            new Alert(Alert.AlertType.ERROR,"Give a valid number").show();
+            return;
+        }
         try {
             int n = Integer.parseInt(txtRetNPosts.getText());
-            Statement stm = DBConnection.getInstance().getConnection().createStatement();
-            ResultSet rst = stm.executeQuery("SELECT * FROM posts ORDER BY noOfLikes DESC LIMIT '"+n+"'");
-            //creating a list for N posts
-            List<Posts> topPosts = new ArrayList<>();
-            while (rst.next()){
-                Posts post = new Posts(rst.getInt("postId"),rst.getString("content"),rst.getString("author"),
-                        rst.getInt("noOfLikes"),rst.getInt("noOfShares"),rst.getString("dateTime"));
-                topPosts.add(post);
-            }
+            //calling topLikesPosts method in DatabaseAccessCode and return the ArrayList
+            List<Posts> topPosts = new DatabaseAccessCode().topLikePosts(n);
+            //using to String Builder to display text in TextArea
             StringBuilder displayText = new StringBuilder();
 
             for(Posts posts : topPosts){
@@ -220,8 +217,9 @@ public class DashboardFormController {
             }
             txtAreaTopNPosts.setText(displayText.toString());
         } catch (NumberFormatException e){
-            new Alert(Alert.AlertType.ERROR,"Invalid post ID. Try Again").show();
+            new Alert(Alert.AlertType.ERROR,"Invalid Number. Try Again").show();
             txtRetNPosts.clear();
+            txtAreaTopNPosts.clear();
         }catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
         }
@@ -235,7 +233,8 @@ public class DashboardFormController {
         }
         try {
             int postId = Integer.parseInt(txtExportPost.getText());
-            Posts exportPost = PostController.searchPost(postId);
+            //passing to DatabaseAccessCode to search post and return
+            Posts exportPost = new DatabaseAccessCode().searchPost(postId);
             if(exportPost == null){
                 new Alert(Alert.AlertType.ERROR,"No post found with the given post ID").show();
                 return;
@@ -274,21 +273,35 @@ public class DashboardFormController {
 
     public void btnAddPostControlPanel(ActionEvent actionEvent) {
         addPostFormContext.toFront();
+        txtAddId.clear();
+        txtAddContent.clear();
+        txtAddAuthor.clear();
+        txtAddLikes.clear();
+        txtAddShares.clear();
     }
 
     public void btnRetrievePostControlPanel(ActionEvent actionEvent) {
         retrievePostFormContext.toFront();
+        txtRetId.clear();
+        txtRetAuthor.clear();
+        txtRetLikes.clear();
+        txtRetShares.clear();
+        txtRetDateTime.clear();
     }
 
     public void btnremovePostControlPanel(ActionEvent actionEvent) {
         removePostFormContext.toFront();
+        txtDeletePostId.clear();
     }
 
     public void btnTopPostControlPanel(ActionEvent actionEvent) {
         retrieveTopNPostsFormContext.toFront();
+        txtRetNPosts.clear();
+        txtAreaTopNPosts.clear();
     }
 
     public void btnExportPostControlPanel(ActionEvent actionEvent) {
         exportPostFormContext.toFront();
+        txtExportPost.clear();
     }
 }

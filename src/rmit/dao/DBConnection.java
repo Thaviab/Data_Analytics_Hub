@@ -1,4 +1,4 @@
-package rmit.db;
+package rmit.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

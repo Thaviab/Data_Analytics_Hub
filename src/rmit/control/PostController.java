@@ -1,6 +1,6 @@
 package rmit.control;
 
-import rmit.db.DBConnection;
+import rmit.dao.DBConnection;
 import rmit.model.Posts;
 
 import java.sql.*;

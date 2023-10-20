@@ -5,22 +5,21 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import rmit.db.DBConnection;
-import rmit.model.Posts;
-import rmit.model.User;
+import rmit.dao.DatabaseAccessCode;
+import rmit.dao.DBConnection;
+import rmit.entity.Posts;
+import rmit.entity.User;
 
 import java.io.*;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,7 +56,7 @@ public class VipDashboardFormController {
     }
 
     public void setUser(User user){
-        //getting user object to display yhe name
+        //getting User object to display yhe name
         this.currentUser = user;
         lblName.setText(currentUser.getFirstName()+" "+currentUser.getLastName());
     }
@@ -91,9 +90,11 @@ public class VipDashboardFormController {
         String formattedDateTime = currentDateTime.format(formatter);
         try {
             //passing to addPost in PostController
-            boolean isAdded = PostController.addPost(Integer.parseInt(txtAddId.getText()),
+            Posts newPost = new Posts(Integer.parseInt(txtAddId.getText()),
                     txtAddContent.getText(),txtAddAuthor.getText(),Integer.parseInt(txtAddLikes.getText()),
                     Integer.parseInt(txtAddShares.getText()),formattedDateTime);
+            //passing to addPost in DatabaseAccessCode
+            boolean isAdded = new DatabaseAccessCode().addPost(newPost);
             if (isAdded) {
                 txtAddId.clear();
                 txtAddContent.clear();
@@ -117,22 +118,23 @@ public class VipDashboardFormController {
             new Alert(Alert.AlertType.ERROR,"Invalid ID. Please try again");
             return;
         }
-
         try {
             int postId = Integer.parseInt(txtRetId.getText());
             //passing postId to execute the query
-            Posts post = PostController.searchPost(postId);
+            Posts post = new DatabaseAccessCode().searchPost(postId);
             if(post != null){
                 StringBuilder displayPost = new StringBuilder();
-                displayPost.append("Post ID: "+post.getPostID()+"\nContent"
+                displayPost.append("Post ID: "+post.getPostID()+"\nContent: "
                         +post.getContent()+"\nAuthor: "+post.getAuthor()
                         +"\nNo of Likes: "+post.getNoOfLikes()+"\nNo of Shares: "+post.getNoOfShares()
                         +"\nDate & Time: "+post.getDateTime());
+                //Displaying the StringBUilder in TextArea
                 txtAreaRetrievePost.setText(displayPost.toString());
             }
         }catch (NumberFormatException e){
             new Alert(Alert.AlertType.ERROR,"Invalid post ID. Try Again").show();
             txtRetId.clear();
+            txtAreaRetrievePost.clear();
         } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
         }
@@ -146,7 +148,7 @@ public class VipDashboardFormController {
         try {
             int postId = Integer.parseInt(txtDeletePostId.getText());
             //calling delete query
-            boolean isRemoved = PostController.deletePost(postId);
+            boolean isRemoved = new DatabaseAccessCode().deletePost(postId);
             if(isRemoved){
                 txtDeletePostId.clear();
                 new Alert(Alert.AlertType.INFORMATION,"Post removed!").show();
@@ -162,17 +164,15 @@ public class VipDashboardFormController {
     }
 
     public void retrieveNPostsOnAction(ActionEvent actionEvent) {
+        if(txtRetNPosts.getText() == null || txtRetNPosts.getText().isEmpty()){
+            new Alert(Alert.AlertType.ERROR,"Give a valid number").show();
+            return;
+        }
         try {
             int n = Integer.parseInt(txtRetNPosts.getText());
-            Statement stm = DBConnection.getInstance().getConnection().createStatement();
-            ResultSet rst = stm.executeQuery("SELECT * FROM posts ORDER BY noOfLikes DESC LIMIT '"+n+"'");
-            //creating a list for N posts
-            List<Posts> topPosts = new ArrayList<>();
-            while (rst.next()){
-                Posts post = new Posts(rst.getInt("postId"),rst.getString("content"),rst.getString("author"),
-                        rst.getInt("noOfLikes"),rst.getInt("noOfShares"),rst.getString("dateTime"));
-                topPosts.add(post);
-            }
+            //calling topLikesPosts method in DatabaseAccessCode and return the ArrayList
+            List<Posts> topPosts = new DatabaseAccessCode().topLikePosts(n);
+            //using to String Builder to display text in TextArea
             StringBuilder displayText = new StringBuilder();
 
             for(Posts posts : topPosts){
@@ -186,8 +186,9 @@ public class VipDashboardFormController {
             }
             txtAreaTopNPosts.setText(displayText.toString());
         }catch (NumberFormatException e){
-            new Alert(Alert.AlertType.ERROR,"Invalid post ID. Try Again").show();
+            new Alert(Alert.AlertType.ERROR,"Invalid Number. Try Again").show();
             txtRetNPosts.clear();
+            txtAreaTopNPosts.clear();
         } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
         }
@@ -201,7 +202,8 @@ public class VipDashboardFormController {
         }
         try {
             int postId = Integer.parseInt(txtExportPost.getText());
-            Posts exportPost = PostController.searchPost(postId);
+            //passing to DatabaseAccessCode to return the post
+            Posts exportPost = new DatabaseAccessCode().searchPost(postId);
             if(exportPost == null){
                 new Alert(Alert.AlertType.ERROR,"No post found with the given post ID").show();
                 return;
@@ -248,32 +250,27 @@ public class VipDashboardFormController {
 
                 Connection connection = DBConnection.getInstance().getConnection();
 
-                int affectedRows = 0;
+                boolean affectedRows = false;
 
                 while ((line = br.readLine()) != null){
                     String[] lineData = line.split(",");
                     int id = Integer.parseInt(lineData[0].trim());
 
                     if(!idCheck(id)){
-                        PreparedStatement stm = connection.prepareStatement("INSERT INTO posts (postId, content, author, noOfLikes, noOfShares, dateTime) " +
-                                "VALUES (?,?,?,?,?,?)");
+                        //getting parameters from the read line
                         String content = lineData[1].trim();
                         String author = lineData[2].trim();
                         int likes = (Integer.parseInt(lineData[3].trim()));
                         int shares = Integer.parseInt(lineData[4].trim());
                         String dateTime = lineData[5].trim();
 
-                        stm.setInt(1,id);
-                        stm.setString(2,content);
-                        stm.setString(3,author);
-                        stm.setInt(4,likes);
-                        stm.setInt(5,shares);
-                        stm.setString(6,dateTime);
+                        Posts importPost = new Posts(id,content,author,likes,shares,dateTime);
 
-                        affectedRows += stm.executeUpdate();
+                        //passing the Posts object to addPost method in DatabaseAccess Code
+                        affectedRows = new DatabaseAccessCode().addPost(importPost);
                     }
                 }
-                if(affectedRows>0){
+                if(affectedRows){
                     new Alert(Alert.AlertType.INFORMATION,"Import sucessfull").show();
                 }else {
                     new Alert(Alert.AlertType.INFORMATION,"No posts were imported").showAndWait();
@@ -296,22 +293,33 @@ public class VipDashboardFormController {
 
     public void btnAddPostControlPanel(ActionEvent actionEvent) {
         addPostFormContext.toFront();
+        txtAddId.clear();
+        txtAddContent.clear();
+        txtAddAuthor.clear();
+        txtAddLikes.clear();
+        txtAddShares.clear();
     }
 
     public void btnRetrievePostControlPanel(ActionEvent actionEvent) {
         retrievePostFormContext.toFront();
+        txtRetId.clear();
+        txtAreaRetrievePost.clear();
     }
 
     public void btnremovePostControlPanel(ActionEvent actionEvent) {
         removePostFormContext.toFront();
+        txtDeletePostId.clear();
     }
 
     public void btnTopPostControlPanel(ActionEvent actionEvent) {
         retreiveTopPostsFormContext.toFront();
+        txtRetNPosts.clear();
+        txtAreaTopNPosts.clear();
     }
 
     public void btnExportPostControlPanel(ActionEvent actionEvent) {
         exportPostFormContext.toFront();
+        txtExportPost.clear();
     }
 
     public void btnDataChartControlPanel(ActionEvent actionEvent) {

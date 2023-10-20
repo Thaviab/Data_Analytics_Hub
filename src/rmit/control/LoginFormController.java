@@ -8,8 +8,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import rmit.db.DBConnection;
-import rmit.model.User;
+import rmit.dao.DatabaseAccessCode;
+import rmit.entity.User;
 
 import java.io.IOException;
 import java.sql.*;
@@ -26,18 +26,19 @@ public class LoginFormController {
 
     public void loginOnAction(ActionEvent actionEvent) throws IOException {
         try {
-            currentUser = UserController.searchUser(txtUsername.getText(),txtPassword.getText());
+
+            currentUser = new DatabaseAccessCode().searchUser(txtUsername.getText(),txtPassword.getText());
             if(currentUser!=null){
                 new Alert(Alert.AlertType.INFORMATION,"Login Sucessfull").show();
                 FXMLLoader loader;
                 if(currentUser.isVip()){
-                    //setting up the vip user interface loader
+                    //setting up the vip User interface loader
                     loader = new FXMLLoader(getClass().getResource("../view/VipDashboardForm.fxml"));
                 }else {
-                    //setting up the normal user interface loader
+                    //setting up the normal User interface loader
                     loader = new FXMLLoader(getClass().getResource("../view/DashboardForm.fxml"));
                 }
-                //setting the stage depending on the user
+                //setting the stage depending on the User
                 Scene scene = new Scene(loader.load());
                 if(currentUser.isVip()){
                     VipDashboardFormController vipDashboardFormController = loader.getController();
