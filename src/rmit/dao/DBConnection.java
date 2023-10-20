@@ -8,8 +8,8 @@ public class DBConnection {
     private static DBConnection dbConnection;
     private Connection connection;
     private DBConnection() throws ClassNotFoundException, SQLException{
-        String path = "D:\\RMIT\\Sem 2\\Advance Prog Prac\\Assignment2\\Data_Analytics_Hub\\";
-        connection = DriverManager.getConnection("jdbc:sqlite:"+path+"dataHub.db");
+        String path = "D:\\RMIT\\Sem 2\\Advance Prog Prac\\Assignment2\\";
+        connection = DriverManager.getConnection("jdbc:sqlite:"+path+"Data_Analytics_Hub\\dataHub.db");
     }
     public static DBConnection getInstance() throws ClassNotFoundException, SQLException{
         if(dbConnection==null){
